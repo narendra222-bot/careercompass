@@ -360,6 +360,176 @@ def tech_gaps(
     return results, unmatched_keys
 
 
+# Phase 3c: per-technology scoring. Editorial constants, human_reviewed: false.
+W_CURATED: float = 0.6
+W_ONET: float = 0.4
+
+
+def _validate_alphas(alphas: list[float]) -> None:
+    if not alphas:
+        raise ValueError("alphas cannot be empty")
+    if any(a < 0.0 for a in alphas):
+        raise ValueError("alphas must all be >= 0")
+    if not math.isclose(sum(alphas), 1.0, rel_tol=1e-9, abs_tol=1e-9):
+        raise ValueError(f"alphas must sum to 1 within 1e-9; sum is {sum(alphas)}")
+
+
+def tech_gap_items(
+    techs_by_soc: dict[str, list[dict[str, Any]]],
+    alphas: dict[str, float],
+    mastery: dict[str, float],
+    curated: list[str] | None = None,
+) -> dict[str, Any]:
+    """Score individual technologies instead of capped commodity groups.
+
+    Per O*NET example e:
+      freq(e)  = sum of alpha_s over occupations s listing e
+      u(e)     = 1 + 0.5*hot(e) + 0.5*in_demand(e)   (hot/in_demand alpha-blended)
+      raw(e)   = freq(e) * u(e)
+    A curated technology groups the examples it resolves to (tech_catalog.resolve) and
+    takes raw = max over them (no double counting); a curated item matching nothing gets
+    raw = median raw of the matched curated items and source "curated_only".
+      onet_w   = raw / sum(raw)                     over all items
+      cur_w    = 1/N for the N curated items, else 0
+      weight   = W_CURATED*cur_w + W_ONET*onet_w    (= onet_w when no curated list)
+      gap      = weight * (1 - mastery)
+    Mastery keys are matched like curated names (exact, alias, canonical form).
+
+    Returns {"items": [...sorted by gap desc, name asc], "matched": {key: item},
+             "unmatched": [keys]}.
+    """
+    from careercompass.tech_catalog import _norm, resolve
+
+    socs = list(alphas.keys())
+    _validate_alphas([alphas[s] for s in socs])
+
+    stats: dict[str, dict[str, Any]] = {}
+    for soc in socs:
+        a = alphas[soc]
+        seen: set[str] = set()
+        for t in techs_by_soc.get(soc, []):
+            ex = t["example"]
+            if ex in seen:
+                continue
+            seen.add(ex)
+            st = stats.setdefault(
+                ex,
+                {"commodity_title": t.get("commodity_title", ""), "freq": 0.0,
+                 "hot": 0.0, "in_demand": 0.0, "n": 0},
+            )
+            st["freq"] += a
+            st["hot"] += a * (1.0 if t.get("hot") else 0.0)
+            st["in_demand"] += a * (1.0 if t.get("in_demand") else 0.0)
+            st["n"] += 1
+
+    def raw_of(ex: str) -> float:
+        st = stats[ex]
+        return float(st["freq"] * (1.0 + 0.5 * st["hot"] + 0.5 * st["in_demand"]))
+
+    examples = sorted(stats)
+    items: list[dict[str, Any]] = []
+    claimed: set[str] = set()
+
+    curated = curated or []
+    for name in curated:
+        _, matched = resolve(name, examples)
+        claimed.update(matched)
+        best = max(matched, key=raw_of) if matched else None
+        items.append({
+            "example": name,
+            "onet_examples": matched,
+            "commodity_title": stats[best]["commodity_title"] if best else "",
+            "raw": raw_of(best) if best else None,
+            "in_n_occupations": max((stats[m]["n"] for m in matched), default=0),
+            "source": "curated" if matched else "curated_only",
+            "curated": True,
+        })
+
+    matched_raws = sorted(it["raw"] for it in items if it["raw"] is not None)
+    if matched_raws:
+        mid = len(matched_raws) // 2
+        median = (matched_raws[mid] if len(matched_raws) % 2
+                  else (matched_raws[mid - 1] + matched_raws[mid]) / 2.0)
+    else:
+        median = 0.0
+    for it in items:
+        if it["raw"] is None:
+            it["raw"] = median
+
+    for ex in examples:
+        if ex in claimed:
+            continue
+        items.append({
+            "example": ex,
+            "onet_examples": [ex],
+            "commodity_title": stats[ex]["commodity_title"],
+            "raw": raw_of(ex),
+            "in_n_occupations": stats[ex]["n"],
+            "source": "onet",
+            "curated": False,
+        })
+
+    total_raw = sum(it["raw"] for it in items)
+    n_cur = len(curated)
+    for it in items:
+        onet_w = it["raw"] / total_raw if total_raw > 0 else 0.0
+        if n_cur:
+            cur_w = 1.0 / n_cur if it["curated"] else 0.0
+            it["weight"] = W_CURATED * cur_w + W_ONET * onet_w
+        else:
+            it["weight"] = onet_w
+
+    # Mastery lookup: item name first, then any O*NET example it covers.
+    matched_keys: dict[str, str] = {}
+    unmatched: list[str] = []
+    item_mastery: dict[str, float] = {}
+    for key, val in mastery.items():
+        m = min(1.0, max(0.0, float(val)))
+        hit = None
+        for it in items:
+            if _norm(it["example"]) == _norm(key):
+                hit = it
+                break
+        if hit is None:
+            _, exs = resolve(key, examples)
+            if exs:
+                hit = next((it for it in items if set(exs) & set(it["onet_examples"])), None)
+        if hit is None:
+            unmatched.append(key)
+        else:
+            matched_keys[key] = hit["example"]
+            item_mastery[hit["example"]] = m
+
+    for it in items:
+        it["mastery"] = item_mastery.get(it["example"], 0.0)
+        it["gap"] = it["weight"] * (1.0 - it["mastery"])
+
+    items.sort(key=lambda x: (-x["gap"], x["example"]))
+    return {"items": items, "matched": matched_keys, "unmatched": unmatched}
+
+
+# Knowledge/skill elements still counted in readiness but never targeted by courses
+# in a technical roadmap. Editorial, human_reviewed: false.
+NON_PLAN_ELEMENTS: frozenset[str] = frozenset({
+    "Customer and Personal Service",
+    "Telecommunications",
+    "Sales and Marketing",
+    "Personnel and Human Resources",
+    "Administration and Management",
+})
+
+
+def plan_gaps(
+    reqs: list[dict[str, Any]],
+    prof: dict[str, float],
+    eps: float = 1e-3,
+    cfg: ScoringConfig = ScoringConfig(),
+    exclude: frozenset[str] = NON_PLAN_ELEMENTS,
+) -> list[dict[str, Any]]:
+    """gaps() minus elements that a course-based plan should not target."""
+    return [g for g in gaps(reqs, prof, eps, cfg) if g["element_name"] not in exclude]
+
+
 def readiness(
     reqs: list[dict[str, Any]],
     techs: list[dict[str, Any]],

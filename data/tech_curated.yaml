@@ -1,0 +1,23 @@
+# Curated technology lists per role profile.
+# O*NET frequency alone favours generic tools (office suites, e-mail, CAD), so roles
+# with a well-known toolchain get an explicit list that is weighted above the O*NET tail.
+# Names are plain names; careercompass.tech_catalog maps them to O*NET spellings.
+
+devops engineer:
+  human_reviewed: false
+  technologies:
+    - Linux
+    - Bash
+    - Git
+    - Docker
+    - Kubernetes
+    - Terraform
+    - Ansible
+    - Jenkins
+    - GitHub Actions   # not in O*NET 31.0 (only "GitHub"); kept separate on purpose
+    - Prometheus
+    - Grafana
+    - AWS
+    - Python
+    - Helm             # not in O*NET 31.0
+    - Argo CD          # not in O*NET 31.0
