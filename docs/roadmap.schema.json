@@ -1,0 +1,607 @@
+{
+  "$defs": {
+    "Edge": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "prereq",
+            "milestone"
+          ],
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "target",
+        "kind"
+      ],
+      "title": "Edge",
+      "type": "object"
+    },
+    "Feasibility": {
+      "additionalProperties": false,
+      "properties": {
+        "feasible": {
+          "title": "Feasible",
+          "type": "boolean"
+        },
+        "total_hours": {
+          "title": "Total Hours",
+          "type": "number"
+        },
+        "total_weeks": {
+          "title": "Total Weeks",
+          "type": "integer"
+        },
+        "hours_per_week": {
+          "title": "Hours Per Week",
+          "type": "number"
+        },
+        "max_weeks": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Weeks"
+        },
+        "fix": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fix"
+        }
+      },
+      "required": [
+        "feasible",
+        "total_hours",
+        "total_weeks",
+        "hours_per_week",
+        "max_weeks",
+        "fix"
+      ],
+      "title": "Feasibility",
+      "type": "object"
+    },
+    "Node": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "course",
+            "project",
+            "known",
+            "goal"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "phase": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Phase"
+        },
+        "start_week": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Week"
+        },
+        "end_week": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Week"
+        },
+        "hours": {
+          "default": 0.0,
+          "title": "Hours",
+          "type": "number"
+        },
+        "resources": {
+          "items": {
+            "$ref": "#/$defs/Resource"
+          },
+          "title": "Resources",
+          "type": "array"
+        },
+        "deliverables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Deliverables",
+          "type": "array"
+        },
+        "skills_gained": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Skills Gained",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "kind"
+      ],
+      "title": "Node",
+      "type": "object"
+    },
+    "OnetReadiness": {
+      "additionalProperties": false,
+      "properties": {
+        "overall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Overall",
+          "type": "number"
+        },
+        "skill": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Skill",
+          "type": "number"
+        },
+        "knowledge": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Knowledge",
+          "type": "number"
+        },
+        "ability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Ability",
+          "type": "number"
+        },
+        "technology": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Technology",
+          "type": "number"
+        }
+      },
+      "required": [
+        "overall",
+        "skill",
+        "knowledge",
+        "ability",
+        "technology"
+      ],
+      "title": "OnetReadiness",
+      "type": "object"
+    },
+    "Phase": {
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "minimum": 1,
+          "title": "Phase",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "milestone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Milestone"
+        },
+        "start_week": {
+          "minimum": 1,
+          "title": "Start Week",
+          "type": "integer"
+        },
+        "end_week": {
+          "minimum": 1,
+          "title": "End Week",
+          "type": "integer"
+        },
+        "hours": {
+          "exclusiveMinimum": 0.0,
+          "title": "Hours",
+          "type": "number"
+        },
+        "node_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Node Ids",
+          "type": "array"
+        },
+        "readiness_after": {
+          "$ref": "#/$defs/ReadinessPair"
+        }
+      },
+      "required": [
+        "phase",
+        "title",
+        "milestone",
+        "start_week",
+        "end_week",
+        "hours",
+        "node_ids",
+        "readiness_after"
+      ],
+      "title": "Phase",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "generator": {
+          "const": "deterministic-planner",
+          "default": "deterministic-planner",
+          "title": "Generator",
+          "type": "string"
+        },
+        "data": {
+          "default": "O*NET 31.0 Database (onetcenter.org), CC BY 4.0",
+          "title": "Data",
+          "type": "string"
+        },
+        "editorial_constants_human_reviewed": {
+          "default": false,
+          "title": "Editorial Constants Human Reviewed",
+          "type": "boolean"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Readiness": {
+      "additionalProperties": false,
+      "properties": {
+        "overall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Overall",
+          "type": "number"
+        },
+        "tech": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Tech",
+          "type": "number"
+        },
+        "skills": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Skills",
+          "type": "number"
+        }
+      },
+      "required": [
+        "overall",
+        "tech",
+        "skills"
+      ],
+      "title": "Readiness",
+      "type": "object"
+    },
+    "ReadinessPair": {
+      "additionalProperties": false,
+      "properties": {
+        "core": {
+          "$ref": "#/$defs/Readiness"
+        },
+        "onet": {
+          "$ref": "#/$defs/OnetReadiness"
+        }
+      },
+      "required": [
+        "core",
+        "onet"
+      ],
+      "title": "ReadinessPair",
+      "type": "object"
+    },
+    "Resource": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "url"
+      ],
+      "title": "Resource",
+      "type": "object"
+    },
+    "SocAlignment": {
+      "additionalProperties": false,
+      "properties": {
+        "soc": {
+          "pattern": "^\\d{2}-\\d{4}\\.\\d{2}$",
+          "title": "Soc",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "alpha": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Alpha",
+          "type": "number"
+        }
+      },
+      "required": [
+        "soc",
+        "title",
+        "alpha"
+      ],
+      "title": "SocAlignment",
+      "type": "object"
+    },
+    "StudentInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "branch": {
+          "title": "Branch",
+          "type": "string"
+        },
+        "year": {
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Year",
+          "type": "integer"
+        },
+        "hours_per_week": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 80.0,
+          "title": "Hours Per Week",
+          "type": "number"
+        },
+        "target_role": {
+          "title": "Target Role",
+          "type": "string"
+        },
+        "tech_mastery": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Tech Mastery",
+          "type": "object"
+        },
+        "max_weeks": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Weeks"
+        }
+      },
+      "required": [
+        "name",
+        "branch",
+        "year",
+        "hours_per_week",
+        "target_role"
+      ],
+      "title": "StudentInput",
+      "type": "object"
+    },
+    "TechGap": {
+      "additionalProperties": false,
+      "properties": {
+        "tech": {
+          "title": "Tech",
+          "type": "string"
+        },
+        "gap": {
+          "title": "Gap",
+          "type": "number"
+        }
+      },
+      "required": [
+        "tech",
+        "gap"
+      ],
+      "title": "TechGap",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "student": {
+      "$ref": "#/$defs/StudentInput"
+    },
+    "target_role": {
+      "title": "Target Role",
+      "type": "string"
+    },
+    "soc_alignment": {
+      "items": {
+        "$ref": "#/$defs/SocAlignment"
+      },
+      "title": "Soc Alignment",
+      "type": "array"
+    },
+    "baseline_readiness": {
+      "$ref": "#/$defs/ReadinessPair"
+    },
+    "final_readiness": {
+      "$ref": "#/$defs/ReadinessPair"
+    },
+    "target_readiness": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Target Readiness",
+      "type": "number"
+    },
+    "phases": {
+      "items": {
+        "$ref": "#/$defs/Phase"
+      },
+      "title": "Phases",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/Node"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/Edge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "top_tech_gaps": {
+      "items": {
+        "$ref": "#/$defs/TechGap"
+      },
+      "title": "Top Tech Gaps",
+      "type": "array"
+    },
+    "skipped_known": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Skipped Known",
+      "type": "array"
+    },
+    "dropped_for_time": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dropped For Time",
+      "type": "array"
+    },
+    "unmatched_tech": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmatched Tech",
+      "type": "array"
+    },
+    "feasibility": {
+      "$ref": "#/$defs/Feasibility"
+    },
+    "explanation": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Explanation"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    }
+  },
+  "required": [
+    "student",
+    "target_role",
+    "soc_alignment",
+    "baseline_readiness",
+    "final_readiness",
+    "target_readiness",
+    "phases",
+    "nodes",
+    "edges",
+    "top_tech_gaps",
+    "skipped_known",
+    "dropped_for_time",
+    "unmatched_tech",
+    "feasibility"
+  ],
+  "title": "Roadmap",
+  "type": "object"
+}

@@ -352,3 +352,18 @@ def build_plan(student: StudentProfile, con: Any = None) -> dict[str, Any]:
     techs_by_soc = {s: db.get_tech(con, s) for s in alphas}
     planner = Planner(reqs_by_soc, techs_by_soc, alphas, profile["role"], catalog_mod.load())
     return planner.plan(student)
+
+
+def generate_roadmap(student: StudentProfile, con: Any = None) -> Any:
+    """Plan and convert to a validated, catalog-verified schemas.Roadmap."""
+    from careercompass import schemas
+
+    plan = build_plan(student, con)
+    profile = load_role_profile(student.target_role)
+    titles = {s["soc"]: s.get("title", s["soc"]) for s in profile["socs"]}
+    cat = catalog_mod.load()
+    roadmap = schemas.build_roadmap(plan, cat, titles)
+    problems = schemas.verify(roadmap, cat)
+    if problems:
+        raise ValueError("roadmap failed catalog verification: " + "; ".join(problems))
+    return roadmap

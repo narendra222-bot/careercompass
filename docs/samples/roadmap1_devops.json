@@ -1,0 +1,879 @@
+{
+  "schema_version": "1.0",
+  "student": {
+    "name": "Ravi (sample)",
+    "branch": "CSE",
+    "year": 3,
+    "hours_per_week": 10.0,
+    "target_role": "devops engineer",
+    "tech_mastery": {
+      "Linux": 0.7,
+      "Bash": 0.6,
+      "Git": 0.7,
+      "Python": 0.5
+    },
+    "max_weeks": null
+  },
+  "target_role": "devops engineer",
+  "soc_alignment": [
+    {
+      "soc": "15-1299.08",
+      "title": "Computer Systems Engineers/Architects",
+      "alpha": 0.45
+    },
+    {
+      "soc": "15-1244.00",
+      "title": "Network and Computer Systems Administrators",
+      "alpha": 0.3
+    },
+    {
+      "soc": "15-1252.00",
+      "title": "Software Developers",
+      "alpha": 0.25
+    }
+  ],
+  "baseline_readiness": {
+    "core": {
+      "overall": 0.2642,
+      "tech": 0.1679,
+      "skills": 0.4085
+    },
+    "onet": {
+      "overall": 0.2521,
+      "skill": 0.3609,
+      "knowledge": 0.3371,
+      "ability": 0.2282,
+      "technology": 0.1051
+    }
+  },
+  "final_readiness": {
+    "core": {
+      "overall": 0.7178,
+      "tech": 0.7738,
+      "skills": 0.6337
+    },
+    "onet": {
+      "overall": 0.4176,
+      "skill": 0.4505,
+      "knowledge": 0.3605,
+      "ability": 0.2282,
+      "technology": 0.4843
+    }
+  },
+  "target_readiness": 0.8,
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Project: Production-style containerized 3-tier app",
+      "milestone": "proj-containerize-3tier",
+      "start_week": 1,
+      "end_week": 4,
+      "hours": 40.0,
+      "node_ids": [
+        "docker-containers",
+        "proj-containerize-3tier"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.3132,
+          "tech": 0.235,
+          "skills": 0.4305
+        },
+        "onet": {
+          "overall": 0.2702,
+          "skill": 0.3689,
+          "knowledge": 0.3409,
+          "ability": 0.2282,
+          "technology": 0.1471
+        }
+      }
+    },
+    {
+      "phase": 2,
+      "title": "Project: CI pipeline with tests, image scan and registry push",
+      "milestone": "proj-ci-pipeline",
+      "start_week": 5,
+      "end_week": 10,
+      "hours": 57.0,
+      "node_ids": [
+        "ci-github-actions",
+        "python-automation",
+        "proj-ci-pipeline"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.381,
+          "tech": 0.3289,
+          "skills": 0.4592
+        },
+        "onet": {
+          "overall": 0.2946,
+          "skill": 0.3818,
+          "knowledge": 0.3409,
+          "ability": 0.2282,
+          "technology": 0.2059
+        }
+      }
+    },
+    {
+      "phase": 3,
+      "title": "Project: GitOps-deployed Kubernetes app with monitoring and alerts",
+      "milestone": "proj-k8s-gitops-observability",
+      "start_week": 10,
+      "end_week": 21,
+      "hours": 106.0,
+      "node_ids": [
+        "networking-basics",
+        "kubernetes-core",
+        "helm-charts",
+        "argocd-gitops",
+        "prometheus-grafana",
+        "proj-k8s-gitops-observability"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.5763,
+          "tech": 0.5807,
+          "skills": 0.5697
+        },
+        "onet": {
+          "overall": 0.3663,
+          "skill": 0.4236,
+          "knowledge": 0.3568,
+          "ability": 0.2282,
+          "technology": 0.3634
+        }
+      }
+    },
+    {
+      "phase": 4,
+      "title": "Project: AWS environment as code",
+      "milestone": "proj-terraform-aws",
+      "start_week": 21,
+      "end_week": 29,
+      "hours": 87.0,
+      "node_ids": [
+        "aws-core",
+        "ansible-config",
+        "terraform-iac",
+        "proj-terraform-aws"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.6973,
+          "tech": 0.7409,
+          "skills": 0.6319
+        },
+        "onet": {
+          "overall": 0.4102,
+          "skill": 0.4497,
+          "knowledge": 0.3605,
+          "ability": 0.2282,
+          "technology": 0.4637
+        }
+      }
+    },
+    {
+      "phase": 5,
+      "title": "Electives",
+      "milestone": null,
+      "start_week": 30,
+      "end_week": 30,
+      "hours": 10.0,
+      "node_ids": [
+        "jenkins-pipelines"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.7178,
+          "tech": 0.7738,
+          "skills": 0.6337
+        },
+        "onet": {
+          "overall": 0.4176,
+          "skill": 0.4505,
+          "knowledge": 0.3605,
+          "ability": 0.2282,
+          "technology": 0.4843
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "docker-containers",
+      "label": "Containers with Docker",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 1,
+      "end_week": 2,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "Docker Get Started (official)",
+          "url": "https://docs.docker.com/get-started/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Docker",
+        "Engineering and Technology",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "proj-containerize-3tier",
+      "label": "Project: Production-style containerized 3-tier app",
+      "kind": "project",
+      "phase": 1,
+      "start_week": 3,
+      "end_week": 4,
+      "hours": 20.0,
+      "resources": [],
+      "deliverables": [
+        "Multi-stage Dockerfiles for a web API, worker and Postgres-backed service",
+        "docker compose stack with health checks, named volumes and a .env template",
+        "Makefile + Bash scripts for build, seed and backup",
+        "README with architecture diagram and image-size before/after numbers"
+      ],
+      "skills_gained": [
+        "Bash",
+        "Docker",
+        "Git",
+        "Technology Design",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "id": "ci-github-actions",
+      "label": "CI/CD with GitHub Actions",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 5,
+      "end_week": 6,
+      "hours": 12.0,
+      "resources": [
+        {
+          "title": "GitHub Actions documentation",
+          "url": "https://docs.github.com/en/actions"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Git",
+        "GitHub Actions",
+        "Operations Analysis",
+        "Quality Control Analysis"
+      ]
+    },
+    {
+      "id": "python-automation",
+      "label": "Python for automation",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 6,
+      "end_week": 9,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "The Python Tutorial (official)",
+          "url": "https://docs.python.org/3/tutorial/"
+        },
+        {
+          "title": "Automate the Boring Stuff with Python (free online)",
+          "url": "https://automatetheboringstuff.com/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Python",
+        "Complex Problem Solving",
+        "Programming"
+      ]
+    },
+    {
+      "id": "proj-ci-pipeline",
+      "label": "Project: CI pipeline with tests, image scan and registry push",
+      "kind": "project",
+      "phase": 2,
+      "start_week": 9,
+      "end_week": 10,
+      "hours": 15.0,
+      "resources": [],
+      "deliverables": [
+        "GitHub Actions workflow - lint, unit tests, build, Trivy image scan, push to GHCR",
+        "Branch protection requiring green checks; cached dependencies",
+        "Status badges and a short write-up of pipeline duration before/after caching"
+      ],
+      "skills_gained": [
+        "GitHub Actions",
+        "Python",
+        "Operations Analysis",
+        "Quality Control Analysis"
+      ]
+    },
+    {
+      "id": "networking-basics",
+      "label": "Networking for cloud engineers (DNS, HTTP, TCP/IP, TLS)",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 10,
+      "end_week": 12,
+      "hours": 15.0,
+      "resources": [
+        {
+          "title": "Cloudflare Learning Center",
+          "url": "https://www.cloudflare.com/learning/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Computers and Electronics",
+        "Systems Analysis",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "id": "kubernetes-core",
+      "label": "Kubernetes fundamentals",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 12,
+      "end_week": 15,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "Kubernetes Basics tutorial (official)",
+          "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+        },
+        {
+          "title": "Kubernetes concepts",
+          "url": "https://kubernetes.io/docs/concepts/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Kubernetes",
+        "Systems Analysis",
+        "Systems Evaluation",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "id": "helm-charts",
+      "label": "Packaging apps with Helm",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 15,
+      "end_week": 15,
+      "hours": 8.0,
+      "resources": [
+        {
+          "title": "Helm quickstart (official)",
+          "url": "https://helm.sh/docs/intro/quickstart/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Helm",
+        "Kubernetes"
+      ]
+    },
+    {
+      "id": "argocd-gitops",
+      "label": "GitOps with Argo CD",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 16,
+      "end_week": 16,
+      "hours": 8.0,
+      "resources": [
+        {
+          "title": "Argo CD getting started (official)",
+          "url": "https://argo-cd.readthedocs.io/en/stable/getting_started/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Argo CD",
+        "Operations Analysis"
+      ]
+    },
+    {
+      "id": "prometheus-grafana",
+      "label": "Monitoring with Prometheus and Grafana",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 16,
+      "end_week": 18,
+      "hours": 15.0,
+      "resources": [
+        {
+          "title": "Prometheus overview (official)",
+          "url": "https://prometheus.io/docs/introduction/overview/"
+        },
+        {
+          "title": "Grafana tutorials (official)",
+          "url": "https://grafana.com/tutorials/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Grafana",
+        "Prometheus",
+        "Monitoring",
+        "Operations Monitoring",
+        "Systems Evaluation"
+      ]
+    },
+    {
+      "id": "proj-k8s-gitops-observability",
+      "label": "Project: GitOps-deployed Kubernetes app with monitoring and alerts",
+      "kind": "project",
+      "phase": 3,
+      "start_week": 18,
+      "end_week": 21,
+      "hours": 30.0,
+      "resources": [],
+      "deliverables": [
+        "Helm chart for the Project 1 app deployed to kind or k3s",
+        "Argo CD application syncing from a Git repo; rollback demonstrated",
+        "Prometheus scraping app metrics; Grafana dashboard with latency and error rate",
+        "One alert rule plus a written incident drill (break it, detect it, fix it)"
+      ],
+      "skills_gained": [
+        "Argo CD",
+        "Grafana",
+        "Helm",
+        "Kubernetes",
+        "Prometheus",
+        "Monitoring",
+        "Operations Monitoring",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "id": "aws-core",
+      "label": "AWS core services (IAM, EC2, S3, VPC)",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 21,
+      "end_week": 24,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "AWS Skill Builder (free digital courses)",
+          "url": "https://explore.skillbuilder.aws/"
+        },
+        {
+          "title": "AWS documentation",
+          "url": "https://docs.aws.amazon.com/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "AWS",
+        "Engineering and Technology",
+        "Systems Analysis",
+        "Systems Evaluation"
+      ]
+    },
+    {
+      "id": "ansible-config",
+      "label": "Configuration management with Ansible",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 24,
+      "end_week": 25,
+      "hours": 12.0,
+      "resources": [
+        {
+          "title": "Ansible getting started (official)",
+          "url": "https://docs.ansible.com/ansible/latest/getting_started/index.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Ansible",
+        "Operations Analysis"
+      ]
+    },
+    {
+      "id": "terraform-iac",
+      "label": "Infrastructure as Code with Terraform",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 25,
+      "end_week": 27,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "HashiCorp Terraform tutorials",
+          "url": "https://developer.hashicorp.com/terraform/tutorials"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "AWS",
+        "Terraform",
+        "Systems Analysis",
+        "Technology Design"
+      ]
+    },
+    {
+      "id": "proj-terraform-aws",
+      "label": "Project: AWS environment as code",
+      "kind": "project",
+      "phase": 4,
+      "start_week": 27,
+      "end_week": 29,
+      "hours": 25.0,
+      "resources": [],
+      "deliverables": [
+        "Terraform modules for VPC, subnets, security groups and an EC2/ECS service",
+        "Remote state in S3 with locking; separate dev and prod workspaces",
+        "Ansible playbook that configures hosts idempotently",
+        "Plan output posted on every pull request by CI; free-tier cost notes"
+      ],
+      "skills_gained": [
+        "AWS",
+        "Ansible",
+        "Terraform",
+        "Systems Analysis",
+        "Systems Evaluation",
+        "Technology Design"
+      ]
+    },
+    {
+      "id": "jenkins-pipelines",
+      "label": "Jenkins pipelines",
+      "kind": "course",
+      "phase": 5,
+      "start_week": 30,
+      "end_week": 30,
+      "hours": 10.0,
+      "resources": [
+        {
+          "title": "Jenkins tutorials (official)",
+          "url": "https://www.jenkins.io/doc/tutorials/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Jenkins",
+        "Quality Control Analysis"
+      ]
+    },
+    {
+      "id": "bash-scripting",
+      "label": "Shell scripting and automation",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "git-version-control",
+      "label": "Git and collaborative version control",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "linux-fundamentals",
+      "label": "Linux command line fundamentals",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "goal:devops-engineer",
+      "label": "Devops Engineer",
+      "kind": "goal",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "linux-fundamentals->ansible-config",
+      "source": "linux-fundamentals",
+      "target": "ansible-config",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-automation->ansible-config",
+      "source": "python-automation",
+      "target": "ansible-config",
+      "kind": "prereq"
+    },
+    {
+      "id": "helm-charts->argocd-gitops",
+      "source": "helm-charts",
+      "target": "argocd-gitops",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->argocd-gitops",
+      "source": "git-version-control",
+      "target": "argocd-gitops",
+      "kind": "prereq"
+    },
+    {
+      "id": "networking-basics->aws-core",
+      "source": "networking-basics",
+      "target": "aws-core",
+      "kind": "prereq"
+    },
+    {
+      "id": "linux-fundamentals->bash-scripting",
+      "source": "linux-fundamentals",
+      "target": "bash-scripting",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->ci-github-actions",
+      "source": "git-version-control",
+      "target": "ci-github-actions",
+      "kind": "prereq"
+    },
+    {
+      "id": "docker-containers->ci-github-actions",
+      "source": "docker-containers",
+      "target": "ci-github-actions",
+      "kind": "prereq"
+    },
+    {
+      "id": "linux-fundamentals->docker-containers",
+      "source": "linux-fundamentals",
+      "target": "docker-containers",
+      "kind": "prereq"
+    },
+    {
+      "id": "kubernetes-core->helm-charts",
+      "source": "kubernetes-core",
+      "target": "helm-charts",
+      "kind": "prereq"
+    },
+    {
+      "id": "ci-github-actions->jenkins-pipelines",
+      "source": "ci-github-actions",
+      "target": "jenkins-pipelines",
+      "kind": "prereq"
+    },
+    {
+      "id": "docker-containers->kubernetes-core",
+      "source": "docker-containers",
+      "target": "kubernetes-core",
+      "kind": "prereq"
+    },
+    {
+      "id": "networking-basics->kubernetes-core",
+      "source": "networking-basics",
+      "target": "kubernetes-core",
+      "kind": "prereq"
+    },
+    {
+      "id": "linux-fundamentals->networking-basics",
+      "source": "linux-fundamentals",
+      "target": "networking-basics",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-containerize-3tier->proj-ci-pipeline",
+      "source": "proj-containerize-3tier",
+      "target": "proj-ci-pipeline",
+      "kind": "prereq"
+    },
+    {
+      "id": "ci-github-actions->proj-ci-pipeline",
+      "source": "ci-github-actions",
+      "target": "proj-ci-pipeline",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-automation->proj-ci-pipeline",
+      "source": "python-automation",
+      "target": "proj-ci-pipeline",
+      "kind": "prereq"
+    },
+    {
+      "id": "docker-containers->proj-containerize-3tier",
+      "source": "docker-containers",
+      "target": "proj-containerize-3tier",
+      "kind": "prereq"
+    },
+    {
+      "id": "bash-scripting->proj-containerize-3tier",
+      "source": "bash-scripting",
+      "target": "proj-containerize-3tier",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->proj-containerize-3tier",
+      "source": "git-version-control",
+      "target": "proj-containerize-3tier",
+      "kind": "prereq"
+    },
+    {
+      "id": "argocd-gitops->proj-k8s-gitops-observability",
+      "source": "argocd-gitops",
+      "target": "proj-k8s-gitops-observability",
+      "kind": "prereq"
+    },
+    {
+      "id": "prometheus-grafana->proj-k8s-gitops-observability",
+      "source": "prometheus-grafana",
+      "target": "proj-k8s-gitops-observability",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-ci-pipeline->proj-k8s-gitops-observability",
+      "source": "proj-ci-pipeline",
+      "target": "proj-k8s-gitops-observability",
+      "kind": "prereq"
+    },
+    {
+      "id": "terraform-iac->proj-terraform-aws",
+      "source": "terraform-iac",
+      "target": "proj-terraform-aws",
+      "kind": "prereq"
+    },
+    {
+      "id": "ansible-config->proj-terraform-aws",
+      "source": "ansible-config",
+      "target": "proj-terraform-aws",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-ci-pipeline->proj-terraform-aws",
+      "source": "proj-ci-pipeline",
+      "target": "proj-terraform-aws",
+      "kind": "prereq"
+    },
+    {
+      "id": "kubernetes-core->prometheus-grafana",
+      "source": "kubernetes-core",
+      "target": "prometheus-grafana",
+      "kind": "prereq"
+    },
+    {
+      "id": "aws-core->terraform-iac",
+      "source": "aws-core",
+      "target": "terraform-iac",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->terraform-iac",
+      "source": "git-version-control",
+      "target": "terraform-iac",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-containerize-3tier->goal:devops-engineer",
+      "source": "proj-containerize-3tier",
+      "target": "goal:devops-engineer",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-ci-pipeline->goal:devops-engineer",
+      "source": "proj-ci-pipeline",
+      "target": "goal:devops-engineer",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-k8s-gitops-observability->goal:devops-engineer",
+      "source": "proj-k8s-gitops-observability",
+      "target": "goal:devops-engineer",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-terraform-aws->goal:devops-engineer",
+      "source": "proj-terraform-aws",
+      "target": "goal:devops-engineer",
+      "kind": "milestone"
+    }
+  ],
+  "top_tech_gaps": [
+    {
+      "tech": "AWS",
+      "gap": 0.0421
+    },
+    {
+      "tech": "Ansible",
+      "gap": 0.042
+    },
+    {
+      "tech": "Argo CD",
+      "gap": 0.042
+    },
+    {
+      "tech": "Docker",
+      "gap": 0.042
+    },
+    {
+      "tech": "GitHub Actions",
+      "gap": 0.042
+    },
+    {
+      "tech": "Helm",
+      "gap": 0.042
+    },
+    {
+      "tech": "Jenkins",
+      "gap": 0.0413
+    },
+    {
+      "tech": "Kubernetes",
+      "gap": 0.0413
+    },
+    {
+      "tech": "Terraform",
+      "gap": 0.0413
+    },
+    {
+      "tech": "Grafana",
+      "gap": 0.041
+    }
+  ],
+  "skipped_known": [
+    "bash-scripting",
+    "git-version-control",
+    "linux-fundamentals"
+  ],
+  "dropped_for_time": [],
+  "unmatched_tech": [],
+  "feasibility": {
+    "feasible": true,
+    "total_hours": 300.0,
+    "total_weeks": 30,
+    "hours_per_week": 10.0,
+    "max_weeks": null,
+    "fix": null
+  },
+  "explanation": null,
+  "provenance": {
+    "generator": "deterministic-planner",
+    "data": "O*NET 31.0 Database (onetcenter.org), CC BY 4.0",
+    "editorial_constants_human_reviewed": false
+  }
+}
