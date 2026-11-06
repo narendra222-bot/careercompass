@@ -1,0 +1,33 @@
+==========================================================================================
+HELDOUT SET EVALUATION (FROZEN LABELS - RAW RETRIEVAL)
+==========================================================================================
+
+--- 1. STANDARD QUERIES (labels alt-title derived) ---
+Query: "backend developer        " | Expected: ['15-1254.00']               | Status: HIT (rank 1) | Top-1: 15-1254.00 (Web Developers) [D:1, B:1]
+Query: "frontend developer       " | Expected: ['15-1255.00', '15-1254.00'] | Status: HIT (rank 1) | Top-1: 15-1254.00 (Web Developers) [D:1, B:1]
+Query: "full stack developer     " | Expected: ['15-1254.00', '15-1252.00'] | Status: HIT (rank 1) | Top-1: 15-1254.00 (Web Developers) [D:1, B:1]
+Query: "cyber security analyst   " | Expected: ['15-1212.00']               | Status: HIT (rank 3) | Top-1: 15-1299.06 (Digital Forensics Analysts) [D:2, B:1]
+Query: "mobile app developer     " | Expected: ['15-1252.00']               | Status: HIT (rank 8) | Top-1: 15-1254.00 (Web Developers) [D:1, B:2]
+Query: "game developer           " | Expected: ['15-1255.01', '15-1252.00'] | Status: HIT (rank 1) | Top-1: 15-1255.01 (Video Game Designers) [D:1, B:1]
+Query: "IT support specialist    " | Expected: ['15-1232.00']               | Status: HIT (rank 3) | Top-1: 15-1231.00 (Computer Network Support Specialists) [D:2, B:1]
+Query: "UI UX designer           " | Expected: ['15-1255.00', '15-1253.00'] | Status: HIT (rank 6) | Top-1: 27-1024.00 (Graphic Designers) [D:2, B:5]
+Query: "business analyst         " | Expected: ['13-1111.00', '15-1211.00'] | Status: HIT (rank 2) | Top-1: 15-2051.01 (Business Intelligence Analysts) [D:1, B:1]
+Query: "embedded systems engineer" | Expected: ['17-2061.00', '15-1252.00'] | Status: MISS         | Top-1: 17-2199.06 (Microsystems Engineers) [D:1, B:3]
+Query: "cloud architect          " | Expected: ['15-1241.00', '15-1299.08'] | Status: HIT (rank 1) | Top-1: 15-1299.08 (Computer Systems Engineers/Architects) [D:1, B:1]
+Query: "penetration tester       " | Expected: ['15-1299.04']               | Status: HIT (rank 1) | Top-1: 15-1299.04 (Penetration Testers) [D:1, B:1]
+
+Group Summary (12 queries):
+  Top-1 Accuracy: 6/12 (50.0%)
+  Top-3 Accuracy: 9/12 (75.0%)
+  MRR:            0.6215
+
+--- 2. CURATED_NEEDED QUERIES (emerging / unrepresented roles) ---
+Query: "data engineer            " | Expected: ['15-2051.00', '15-1243.00'] | Status: MISS         | Top-1: 15-1299.08 (Computer Systems Engineers/Architects) [D:7, B:2]
+Query: "AI engineer              " | Expected: ['15-1221.00']               | Status: HIT (rank 1) | Top-1: 15-1221.00 (Computer and Information Research Scientists) [D:2, B:1]
+Query: "SDE                      " | Expected: ['15-1252.00']               | Status: HIT (rank 1) | Top-1: 15-1252.00 (Software Developers) [D:1, B:None]
+
+Group Summary (3 queries):
+  Top-1 Accuracy: 2/3 (66.7%)
+  Top-3 Accuracy: 2/3 (66.7%)
+  MRR:            0.6667
+

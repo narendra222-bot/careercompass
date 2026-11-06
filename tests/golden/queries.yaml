@@ -1,0 +1,227 @@
+# Golden set of 34 queries for CareerCompass occupation retrieval evaluation.
+# Split into ~20 'tune' queries and ~14 'report' queries.
+
+- query: "software developer"
+  split: "tune"
+  expected:
+    - "15-1252.00"
+  note: "Exact O*NET title Software Developers"
+
+- query: "web developer"
+  split: "tune"
+  expected:
+    - "15-1254.00"
+  note: "Exact O*NET title Web Developers"
+
+- query: "data scientist"
+  split: "tune"
+  expected:
+    - "15-2051.00"
+  note: "Exact O*NET title Data Scientists"
+
+- query: "data analyst"
+  split: "tune"
+  expected:
+    - "15-2051.01"
+    - "15-2051.00"
+    - "15-2041.00"
+  note: "Business Intelligence Analysts, Data Scientists, Statisticians (alt titles verified)"
+
+- query: "database administrator"
+  split: "tune"
+  expected:
+    - "15-1242.00"
+  note: "Exact O*NET title Database Administrators"
+
+- query: "network administrator"
+  split: "tune"
+  expected:
+    - "15-1244.00"
+  note: "Exact O*NET title Network and Computer Systems Administrators"
+
+- query: "network architect"
+  split: "tune"
+  expected:
+    - "15-1241.00"
+  note: "Exact O*NET title Computer Network Architects"
+
+- query: "information security analyst"
+  split: "tune"
+  expected:
+    - "15-1212.00"
+  note: "Exact O*NET title Information Security Analysts"
+
+- query: "computer systems analyst"
+  split: "tune"
+  expected:
+    - "15-1211.00"
+  note: "Exact O*NET title Computer Systems Analysts"
+
+- query: "QA engineer"
+  split: "tune"
+  expected:
+    - "15-1253.00"
+  note: "Software Quality Assurance Analysts and Testers"
+
+- query: "computer programmer"
+  split: "tune"
+  expected:
+    - "15-1251.00"
+  note: "Exact O*NET title Computer Programmers"
+
+- query: "database architect"
+  split: "tune"
+  expected:
+    - "15-1243.00"
+  note: "Exact O*NET title Database Architects"
+
+- query: "business intelligence analyst"
+  split: "tune"
+  expected:
+    - "15-2051.01"
+  note: "Exact O*NET title Business Intelligence Analysts"
+
+- query: "devops engineer"
+  split: "tune"
+  needs_human_review: true
+  curated: true
+  expected:
+    - "15-1252.00"
+    - "15-1299.08"
+    - "15-1244.00"
+  note: "No exact O*NET title; Software Developers / Computer Systems Engineers / Sysadmins"
+
+- query: "cloud engineer"
+  split: "tune"
+  needs_human_review: true
+  curated: true
+  expected:
+    - "15-1299.08"
+    - "15-1241.00"
+    - "15-1252.00"
+  note: "No exact O*NET title; Systems Engineers/Architects / Network Architects / Software Developers"
+
+- query: "something with data"
+  split: "tune"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "computers"
+  split: "tune"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "IT job"
+  split: "tune"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "registered nurse"
+  split: "tune"
+  expected:
+    - "29-1141.00"
+  note: "Non-tech control: Registered Nurses"
+
+- query: "accountant"
+  split: "tune"
+  expected:
+    - "13-2011.00"
+  note: "Non-tech control: Accountants and Auditors"
+
+# --- REPORT SET (14 queries) ---
+
+- query: "machine learning engineer"
+  split: "report"
+  needs_human_review: true
+  curated: true
+  expected:
+    - "15-2051.00"
+    - "15-1299.08"
+    - "15-1252.00"
+  note: "No exact O*NET title; Data Scientists / Systems Engineers / Software Developers"
+
+- query: "site reliability engineer"
+  split: "report"
+  needs_human_review: true
+  curated: true
+  expected:
+    - "15-1252.00"
+    - "15-1299.08"
+    - "15-1244.00"
+  note: "No exact O*NET title; Software Developers / Systems Engineers / Sysadmins"
+
+- query: "information security engineer"
+  split: "report"
+  expected:
+    - "15-1299.05"
+  note: "Exact O*NET title Information Security Engineers"
+
+- query: "computer network support specialist"
+  split: "report"
+  expected:
+    - "15-1231.00"
+  note: "Exact O*NET title Computer Network Support Specialists"
+
+- query: "computer user support specialist"
+  split: "report"
+  expected:
+    - "15-1232.00"
+  note: "Exact O*NET title Computer User Support Specialists"
+
+- query: "penetration tester"
+  split: "report"
+  expected:
+    - "15-1299.04"
+  note: "Exact O*NET title Penetration Testers"
+
+- query: "digital forensics analyst"
+  split: "report"
+  expected:
+    - "15-1299.06"
+  note: "Exact O*NET title Digital Forensics Analysts"
+
+- query: "IT project manager"
+  split: "report"
+  expected:
+    - "15-1299.09"
+  note: "Exact O*NET title Information Technology Project Managers"
+
+- query: "engineer"
+  split: "report"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "tech worker"
+  split: "report"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "digital career"
+  split: "report"
+  ambiguous: true
+  expected: []
+  note: "Deliberately ambiguous query"
+
+- query: "commercial pilot"
+  split: "report"
+  expected:
+    - "53-2012.00"
+  note: "Non-tech control: Commercial Pilots"
+
+- query: "elementary school teacher"
+  split: "report"
+  expected:
+    - "25-2021.00"
+  note: "Non-tech control: Elementary School Teachers"
+
+- query: "software test engineer"
+  split: "report"
+  expected:
+    - "15-1253.00"
+  note: "Software Quality Assurance Analysts and Testers"
+

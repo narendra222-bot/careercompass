@@ -1,0 +1,102 @@
+# Held-out evaluation set of 15 queries for CareerCompass occupation retrieval.
+# Standard labels are alt-title-derived, so lexical methods may be favored.
+# Evaluated once with frozen labels.
+
+- query: "backend developer"
+  curated_needed: false
+  expected:
+    - "15-1254.00"
+  note: "Web Developers (alt title: Back End Developer)"
+
+- query: "frontend developer"
+  curated_needed: false
+  expected:
+    - "15-1254.00"
+    - "15-1255.00"
+  note: "Web Developers, Web and Digital Interface Designers (alt title: Front End Developer)"
+
+- query: "full stack developer"
+  curated_needed: false
+  expected:
+    - "15-1252.00"
+    - "15-1254.00"
+  note: "Software Developers, Web Developers (alt title: Full Stack Developer)"
+
+- query: "data engineer"
+  curated_needed: true
+  expected:
+    - "15-1243.00"
+    - "15-2051.00"
+  note: "Database Architects (Data Engineer, Big Data Engineer), Data Scientists (Data Engineer). Proposed curated profile includes 15-1252.00."
+
+- query: "AI engineer"
+  curated_needed: true
+  expected:
+    - "15-1221.00"
+  note: "Computer and Information Research Scientists (alt title: AI Engineer). Emerging role."
+
+- query: "cyber security analyst"
+  curated_needed: false
+  expected:
+    - "15-1212.00"
+  note: "Information Security Analysts (alt title: Cyber Security Analyst)"
+
+- query: "mobile app developer"
+  curated_needed: false
+  expected:
+    - "15-1252.00"
+  note: "Software Developers (alt title: Mobile Application Developer)"
+
+- query: "game developer"
+  curated_needed: false
+  expected:
+    - "15-1255.01"
+    - "15-1252.00"
+  note: "Video Game Designers, Software Developers (alt title: Game Developer)"
+
+- query: "IT support specialist"
+  curated_needed: false
+  expected:
+    - "15-1232.00"
+  note: "Computer User Support Specialists (alt title: IT Support Specialist)"
+
+- query: "UI UX designer"
+  curated_needed: false
+  expected:
+    - "15-1255.00"
+    - "15-1253.00"
+  note: "Web and Digital Interface Designers (UI/UX Designer), Software QA Analysts and Testers (UI/UX Designer)"
+
+- query: "business analyst"
+  curated_needed: false
+  expected:
+    - "13-1111.00"
+    - "15-1211.00"
+  note: "Management Analysts (Business Analyst), Computer Systems Analysts (Business Systems Analyst)"
+
+- query: "embedded systems engineer"
+  curated_needed: false
+  expected:
+    - "15-1252.00"
+    - "17-2061.00"
+  note: "Software Developers (Embedded Systems Software Developer), Computer Hardware Engineers (Embedded Hardware Engineer)"
+
+- query: "cloud architect"
+  curated_needed: false
+  expected:
+    - "15-1241.00"
+    - "15-1299.08"
+  note: "Computer Network Architects (Cloud Architect), Computer Systems Engineers/Architects (Cloud Architect)"
+
+- query: "SDE"
+  curated_needed: true
+  expected:
+    - "15-1252.00"
+  note: "Software Developers (alt title: Software Development Engineer; acronym SDE is not in DB)"
+
+- query: "penetration tester"
+  curated_needed: false
+  expected:
+    - "15-1299.04"
+  note: "Penetration Testers (occupation title; alt title: Penetration Testing Consultant)"
+

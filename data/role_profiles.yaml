@@ -1,0 +1,115 @@
+# Curated occupation profiles for multi-faceted or emerging technical roles
+# Alphas define the blend of verified O*NET SOC codes representing the role.
+
+devops engineer:
+  human_reviewed: false
+  aliases:
+    - "devops engineer"
+    - "devops"
+    - "development operations engineer"
+  socs:
+    - soc: "15-1299.08"
+      title: "Computer Systems Engineers/Architects"
+      alpha: 0.45
+    - soc: "15-1244.00"
+      title: "Network and Computer Systems Administrators"
+      alpha: 0.30
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.25
+
+cloud engineer:
+  human_reviewed: false
+  aliases:
+    - "cloud engineer"
+    - "cloud systems engineer"
+    - "cloud infrastructure engineer"
+  socs:
+    - soc: "15-1299.08"
+      title: "Computer Systems Engineers/Architects"
+      alpha: 0.50
+    - soc: "15-1244.00"
+      title: "Network and Computer Systems Administrators"
+      alpha: 0.25
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.25
+
+site reliability engineer:
+  human_reviewed: false
+  aliases:
+    - "site reliability engineer"
+    - "sre"
+  socs:
+    - soc: "15-1299.08"
+      title: "Computer Systems Engineers/Architects"
+      alpha: 0.40
+    - soc: "15-1244.00"
+      title: "Network and Computer Systems Administrators"
+      alpha: 0.35
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.25
+
+machine learning engineer:
+  human_reviewed: false
+  aliases:
+    - "machine learning engineer"
+    - "ml engineer"
+    - "mle"
+  socs:
+    - soc: "15-2051.00"
+      title: "Data Scientists"
+      alpha: 0.50
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.30
+    - soc: "15-1299.08"
+      title: "Computer Systems Engineers/Architects"
+      alpha: 0.20
+
+data engineer:
+  human_reviewed: false
+  aliases:
+    - "data engineer"
+    - "big data engineer"
+    - "data platform engineer"
+  socs:
+    - soc: "15-1243.00"
+      title: "Database Architects"
+      alpha: 0.40
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.35
+    - soc: "15-2051.00"
+      title: "Data Scientists"
+      alpha: 0.25
+
+ai engineer:
+  human_reviewed: false
+  aliases:
+    - "ai engineer"
+    - "artificial intelligence engineer"
+    - "generative ai engineer"
+  socs:
+    - soc: "15-1221.00"
+      title: "Computer and Information Research Scientists"
+      alpha: 0.45
+    - soc: "15-2051.00"
+      title: "Data Scientists"
+      alpha: 0.35
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 0.20
+
+software development engineer:
+  human_reviewed: false
+  aliases:
+    - "software development engineer"
+    - "sde"
+  socs:
+    - soc: "15-1252.00"
+      title: "Software Developers"
+      alpha: 1.00
+
+

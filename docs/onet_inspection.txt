@@ -1,0 +1,129 @@
+================================================================================
+O*NET DATA INSPECTION REPORT (Source Directory: data/onet_text)
+================================================================================
+
+FILE: Occupation Data.txt
+------------------------------------------------------------
+  Exact Header (3 columns): ['O*NET-SOC Code', 'Title', 'Description']
+  Total Data Rows: 1016
+  First 3 Data Rows:
+    [1] ['11-1011.00', 'Chief Executives', 'Determine and formulate policies and provide overall direction of companies or private and public sector organizations within guidelines set up by a board of directors or similar governing body. Plan, direct, or coordinate operational activities at the highest level of management with the help of subordinate executives and staff managers.']
+    [2] ['11-1011.03', 'Chief Sustainability Officers', 'Communicate and coordinate with management, shareholders, customers, and employees to address sustainability issues. Enact or oversee a corporate sustainability strategy.']
+    [3] ['11-1021.00', 'General and Operations Managers', 'Plan, direct, or coordinate the operations of public or private sector organizations, overseeing multiple departments or locations. Duties and responsibilities include formulating policies, managing daily operations, and planning the use of materials and human resources, but are too diverse and general in nature to be classified in any one functional area of management or administration, such as personnel, purchasing, or administrative services. Usually manage through subordinate supervisors. Excludes First-Line Supervisors.']
+
+FILE: Content Model Reference.txt
+------------------------------------------------------------
+  Exact Header (3 columns): ['Element ID', 'Element Name', 'Description']
+  Total Data Rows: 3006
+  First 3 Data Rows:
+    [1] ['1', 'Worker Characteristics', 'Personal traits and abilities that affect how people learn and perform at work.']
+    [2] ['1.A', 'Abilities', 'Natural talents and capabilities that affect how well someone can perform work.']
+    [3] ['1.A.1', 'Cognitive Abilities', 'Abilities that influence the acquisition and application of knowledge in problem solving']
+
+FILE: Scales Reference.txt
+------------------------------------------------------------
+  Exact Header (4 columns): ['Scale ID', 'Scale Name', 'Minimum', 'Maximum']
+  Total Data Rows: 33
+  First 3 Data Rows:
+    [1] ['AO', 'Automation', '1', '5']
+    [2] ['CF', 'Frequency', '1', '5']
+    [3] ['CN', 'Amount of Contact', '1', '5']
+
+FILE: Skills.txt
+------------------------------------------------------------
+  Status: MISSING (File not found at data/onet_text/Skills.txt)
+
+FILE: Essential Skills.txt
+------------------------------------------------------------
+  Exact Header (13 columns): ['O*NET-SOC Code', 'Element ID', 'Element Name', 'Scale ID', 'Data Value', 'N', 'Standard Error', 'Lower CI Bound', 'Upper CI Bound', 'Recommend Suppress', 'Not Relevant', 'Date', 'Domain Source']
+  Total Data Rows: 18200
+  First 3 Data Rows:
+    [1] ['11-1011.00', '2.A.1.a', 'Reading Comprehension', 'IM', '4.12', '8', '0.1250', '3.8800', '4.3700', 'N', 'n/a', '08/2023', 'Analyst']
+    [2] ['11-1011.00', '2.A.1.a', 'Reading Comprehension', 'LV', '4.62', '8', '0.1830', '4.2664', '4.9836', 'N', 'N', '08/2023', 'Analyst']
+    [3] ['11-1011.00', '2.A.1.b', 'Active Listening', 'IM', '4.00', '8', '0.0000', '4.0000', '4.0000', 'N', 'n/a', '08/2023', 'Analyst']
+  Distinct 'Scale ID' values: ['IM', 'LV']
+  Distinct 'Recommend Suppress' values: ['N', 'Y']
+  Distinct 'Not Relevant' values: ['N', 'Y', 'n/a']
+
+FILE: Transferable Skills.txt
+------------------------------------------------------------
+  Exact Header (13 columns): ['O*NET-SOC Code', 'Element ID', 'Element Name', 'Scale ID', 'Data Value', 'N', 'Standard Error', 'Lower CI Bound', 'Upper CI Bound', 'Recommend Suppress', 'Not Relevant', 'Date', 'Domain Source']
+  Total Data Rows: 45500
+  First 3 Data Rows:
+    [1] ['11-1011.00', '2.B.1.a', 'Social Perceptiveness', 'IM', '4.12', '8', '0.1250', '3.8800', '4.3700', 'N', 'n/a', '08/2023', 'Analyst']
+    [2] ['11-1011.00', '2.B.1.a', 'Social Perceptiveness', 'LV', '4.25', '8', '0.1637', '3.9292', '4.5708', 'N', 'N', '08/2023', 'Analyst']
+    [3] ['11-1011.00', '2.B.1.b', 'Coordination', 'IM', '4.25', '8', '0.1637', '3.9292', '4.5708', 'N', 'n/a', '08/2023', 'Analyst']
+  Distinct 'Scale ID' values: ['IM', 'LV']
+  Distinct 'Recommend Suppress' values: ['N', 'Y']
+  Distinct 'Not Relevant' values: ['N', 'Y', 'n/a']
+
+FILE: Knowledge.txt
+------------------------------------------------------------
+  Exact Header (13 columns): ['O*NET-SOC Code', 'Element ID', 'Element Name', 'Scale ID', 'Data Value', 'N', 'Standard Error', 'Lower CI Bound', 'Upper CI Bound', 'Recommend Suppress', 'Not Relevant', 'Date', 'Domain Source']
+  Total Data Rows: 60060
+  First 3 Data Rows:
+    [1] ['11-1011.00', '2.C.1.a', 'Administration and Management', 'IM', '4.78', '28', '0.1102', '4.5564', '5.0000', 'N', 'n/a', '08/2023', 'Incumbent']
+    [2] ['11-1011.00', '2.C.1.a', 'Administration and Management', 'LV', '6.50', '28', '0.2130', '6.0666', '6.9409', 'N', 'N', '08/2023', 'Incumbent']
+    [3] ['11-1011.00', '2.C.1.b', 'Administrative', 'IM', '2.42', '28', '0.4651', '1.4662', '3.3749', 'N', 'n/a', '08/2023', 'Incumbent']
+
+FILE: Abilities.txt
+------------------------------------------------------------
+  Exact Header (13 columns): ['O*NET-SOC Code', 'Element ID', 'Element Name', 'Scale ID', 'Data Value', 'N', 'Standard Error', 'Lower CI Bound', 'Upper CI Bound', 'Recommend Suppress', 'Not Relevant', 'Date', 'Domain Source']
+  Total Data Rows: 94640
+  First 3 Data Rows:
+    [1] ['11-1011.00', '1.A.1.a.1', 'Oral Comprehension', 'IM', '4.62', '8', '0.1830', '4.2664', '4.9836', 'N', 'n/a', '08/2023', 'Analyst']
+    [2] ['11-1011.00', '1.A.1.a.1', 'Oral Comprehension', 'LV', '4.88', '8', '0.1250', '4.6300', '5.1200', 'N', 'N', '08/2023', 'Analyst']
+    [3] ['11-1011.00', '1.A.1.a.2', 'Written Comprehension', 'IM', '4.25', '8', '0.1637', '3.9292', '4.5708', 'N', 'n/a', '08/2023', 'Analyst']
+
+FILE: Technology Skills.txt
+------------------------------------------------------------
+  Status: MISSING (File not found at data/onet_text/Technology Skills.txt)
+
+FILE: Software Skills.txt
+------------------------------------------------------------
+  Exact Header (6 columns): ['O*NET-SOC Code', 'Workplace Example', 'Element ID', 'Element Name', 'Hot Technology', 'In Demand']
+  Total Data Rows: 31821
+  First 3 Data Rows:
+    [1] ['11-1011.00', 'Adobe Acrobat', '2.E.5.b', 'Document management software', 'Y', 'N']
+    [2] ['11-1011.00', 'AdSense Tracker', '2.E.6.f', 'Data base user interface and query software', 'N', 'N']
+    [3] ['11-1011.00', 'Atlassian JIRA', '2.E.5.a', 'Content workflow software', 'Y', 'N']
+  'In Demand' column: PRESENT
+  'Hot Technology' column: PRESENT
+
+FILE: Task Statements.txt
+------------------------------------------------------------
+  Exact Header (7 columns): ['O*NET-SOC Code', 'Task ID', 'Task', 'Task Type', 'Incumbents Responding', 'Date', 'Domain Source']
+  Total Data Rows: 18838
+  First 3 Data Rows:
+    [1] ['11-1011.00', '8823', "Direct or coordinate an organization's financial or budget activities to fund operations, maximize investments, or increase efficiency.", 'Core', '95', '08/2023', 'Incumbent']
+    [2] ['11-1011.00', '8824', 'Confer with board members, organization officials, or staff members to discuss issues, coordinate activities, or resolve problems.', 'Core', '95', '08/2023', 'Incumbent']
+    [3] ['11-1011.00', '8827', 'Prepare budgets for approval, including those for funding or implementation of programs.', 'Core', '95', '08/2023', 'Incumbent']
+
+FILE: Alternate Titles.txt
+------------------------------------------------------------
+  Status: MISSING (File not found at data/onet_text/Alternate Titles.txt)
+
+FILE: Job Titles.txt
+------------------------------------------------------------
+  Exact Header (4 columns): ['O*NET-SOC Code', 'Job Title', 'Short Title', 'Source(s)']
+  Total Data Rows: 54269
+  First 3 Data Rows:
+    [1] ['11-1011.00', 'Aeronautics Commission Director', 'n/a', '08']
+    [2] ['11-1011.00', 'Agency Owner', 'n/a', '10']
+    [3] ['11-1011.00', 'Agricultural Services Director', 'n/a', '08']
+
+FILE: Job Zones.txt
+------------------------------------------------------------
+  Exact Header (4 columns): ['O*NET-SOC Code', 'Job Zone', 'Date', 'Domain Source']
+  Total Data Rows: 923
+  First 3 Data Rows:
+    [1] ['11-1011.00', '5', '08/2023', 'Analyst']
+    [2] ['11-1011.03', '5', '08/2021', 'Analyst']
+    [3] ['11-1021.00', '4', '08/2023', 'Analyst']
+
+================================================================================
+SCAFFOLD SCHEMA DISCREPANCY SUMMARY
+================================================================================
+  - Skills.txt: ABSENT in O*NET 31.0 (restructured into 'Essential Skills.txt' and 'Transferable Skills.txt')
+  - Technology Skills.txt: ABSENT in O*NET 31.0 (renamed to 'Software Skills.txt')
+  - Alternate Titles.txt: ABSENT in O*NET 31.0 (renamed to 'Job Titles.txt')
