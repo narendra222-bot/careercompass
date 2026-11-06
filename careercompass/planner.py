@@ -42,6 +42,9 @@ SKIP_MASTERY: float = 0.6
 MIN_GAIN_PER_HOUR: float = 0.0005
 TARGET_READINESS: float = 0.80
 READINESS_DECIMALS: int = 4
+# Role-core readiness mix: curated tools vs. trainable O*NET skill/knowledge elements.
+CORE_TECH_SHARE: float = 0.6
+CORE_ELEMENT_SHARE: float = 0.4
 
 
 @dataclass
@@ -92,8 +95,44 @@ class Planner:
         base = scoring.tech_gap_items(techs_by_soc, alphas, {}, curated=self.curated)
         self.tech_weight = {it["example"]: it["weight"] for it in base["items"]}
         self.items = {it.id: it for it in cat.for_role(role)}
+        # Core = what this roadmap can actually teach: curated tools, plus the O*NET
+        # skill/knowledge elements some catalog item for the role trains.
+        curated_low = {c.lower() for c in self.curated}
+        self.core_tech = {k: w for k, w in self.tech_weight.items() if k.lower() in curated_low}
+        trained = {e for it in self.items.values() for e in it.covers.elements}
+        self.core_reqs = [
+            r
+            for r in self.reqs
+            if r["element_name"] in trained
+            and r["element_name"] not in scoring.NON_PLAN_ELEMENTS
+            and r["domain"] != "ability"
+        ]
 
     # ---- scoring -------------------------------------------------------
+
+    def both(self, st: _State) -> dict[str, dict[str, float]]:
+        """{"core": role-core readiness, "onet": full O*NET-profile readiness}."""
+        return {"core": self.core_readiness(st), "onet": self.readiness(st)}
+
+    def core_readiness(self, st: _State) -> dict[str, float]:
+        """Readiness on the role core only (see CORE_* constants)."""
+        tw = sum(self.core_tech.values())
+        tech = (
+            sum(w * st.mastery.get(k, 0.0) for k, w in self.core_tech.items()) / tw if tw else 0.0
+        )
+        num = den = 0.0
+        for r in self.core_reqs:
+            w = scoring.weight(r["imp"], r["reliable"], self.cfg)
+            num += w * scoring.coverage(st.prof.get(r["element_name"], 0.0), r["lvl"])
+            den += w
+        elem = num / den if den else 0.0
+        return {
+            "tech": round(min(1.0, tech), READINESS_DECIMALS),
+            "skills": round(min(1.0, elem), READINESS_DECIMALS),
+            "overall": round(
+                min(1.0, CORE_TECH_SHARE * tech + CORE_ELEMENT_SHARE * elem), READINESS_DECIMALS
+            ),
+        }
 
     def _tech_key(self, name: str) -> str | None:
         """Map a catalog/student tech name to a tech_gap_items item name."""
@@ -165,7 +204,7 @@ class Planner:
         if student.hours_per_week <= 0:
             raise ValueError("hours_per_week must be > 0")
         st0, unmatched = self.initial_state(student)
-        r0 = self.readiness(st0)
+        r0 = self.both(st0)
 
         skipped = sorted(i for i, it in self.items.items() if self._known(it, st0))
         projects = [i for i, it in self.items.items() if it.kind == "project"]
@@ -176,7 +215,7 @@ class Planner:
         st_core = st0
         for i in catalog_mod.topo_order(self.cat, core):
             st_core = self.apply(st_core, self.items[i])
-        base_overall = self.readiness(st_core)["overall"]
+        base_overall = self.core_readiness(st_core)["overall"]
         optional: list[tuple[float, str]] = []
         for i in self.items:
             if i in core or i in skipped:
@@ -186,7 +225,7 @@ class Planner:
             for j in catalog_mod.topo_order(self.cat, needs):
                 st = self.apply(st, self.items[j])
             hours = sum(self.items[j].hours for j in needs)
-            gain = self.readiness(st)["overall"] - base_overall
+            gain = self.core_readiness(st)["overall"] - base_overall
             if hours > 0 and gain / hours >= MIN_GAIN_PER_HOUR:
                 optional.append((gain / hours, i))
         optional.sort(key=lambda x: (-x[0], x[1]))
@@ -296,7 +335,7 @@ class Planner:
                     "end_week": items_out[-1]["end_week"],
                     "hours": sum(x["hours"] for x in items_out),
                     "items": items_out,
-                    "readiness_after": self.readiness(st),
+                    "readiness_after": self.both(st),
                 }
             )
         return phases

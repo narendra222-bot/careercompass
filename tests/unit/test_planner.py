@@ -69,13 +69,29 @@ def test_every_project_is_a_phase_milestone(con: Any) -> None:
     assert projects == [ph["milestone"] for ph in plan["phases"] if ph["milestone"]]
 
 
-def test_readiness_never_decreases(con: Any) -> None:
+@pytest.mark.parametrize("view", ["core", "onet"])
+def test_readiness_never_decreases(con: Any, view: str) -> None:
     plan = build_plan(_student(), con)
-    seq = [plan["baseline_readiness"]["overall"]] + [
-        ph["readiness_after"]["overall"] for ph in plan["phases"]
+    seq = [plan["baseline_readiness"][view]["overall"]] + [
+        ph["readiness_after"][view]["overall"] for ph in plan["phases"]
     ]
     assert all(b >= a for a, b in zip(seq, seq[1:], strict=False))
     assert seq[-1] > seq[0]
+
+
+def test_core_readiness_tracks_what_the_plan_teaches(con: Any) -> None:
+    plan = build_plan(_student(tech_mastery={}), con)
+    base, final = plan["baseline_readiness"], plan["final_readiness"]
+    print(
+        f"\ncore {base['core']['overall']:.3f} -> {final['core']['overall']:.3f} | "
+        f"onet {base['onet']['overall']:.3f} -> {final['onet']['overall']:.3f}"
+    )
+    assert base["core"]["tech"] == 0.0  # no declared tools
+    core_gain = final["core"]["overall"] - base["core"]["overall"]
+    onet_gain = final["onet"]["overall"] - base["onet"]["overall"]
+    # the full O*NET view includes ~540 untaught tools and abilities, so it must move less
+    assert core_gain > onet_gain > 0
+    assert final["core"]["overall"] > final["onet"]["overall"]
 
 
 def test_weeks_follow_hours(con: Any) -> None:
