@@ -237,7 +237,7 @@ items:
 
   # ---------------- proof-of-work projects ----------------
   - id: proj-containerize-3tier
-    title: "Project 1: Production-style containerized 3-tier app"
+    title: "Project: Production-style containerized 3-tier app"
     kind: project
     roles: [devops engineer, cloud engineer]
     hours: 20
@@ -253,7 +253,7 @@ items:
       elements: {Technology Design: 0.1, Troubleshooting: 0.1}
 
   - id: proj-ci-pipeline
-    title: "Project 2: CI pipeline with tests, image scan and registry push"
+    title: "Project: CI pipeline with tests, image scan and registry push"
     kind: project
     roles: [devops engineer, cloud engineer, site reliability engineer]
     hours: 15
@@ -268,7 +268,7 @@ items:
       elements: {Quality Control Analysis: 0.15, Operations Analysis: 0.05}
 
   - id: proj-terraform-aws
-    title: "Project 3: AWS environment as code"
+    title: "Project: AWS environment as code"
     kind: project
     roles: [devops engineer, cloud engineer]
     hours: 25
@@ -284,7 +284,7 @@ items:
       elements: {Systems Analysis: 0.1, Technology Design: 0.1, Systems Evaluation: 0.05}
 
   - id: proj-k8s-gitops-observability
-    title: "Project 4: GitOps-deployed Kubernetes app with monitoring and alerts"
+    title: "Project: GitOps-deployed Kubernetes app with monitoring and alerts"
     kind: project
     roles: [devops engineer, site reliability engineer]
     hours: 30
