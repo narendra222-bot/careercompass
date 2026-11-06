@@ -99,6 +99,28 @@ def _tool_names() -> list[str]:
     return sorted(names.values(), key=len, reverse=True)
 
 
+ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5}
+
+
+def days_per_week(low: str) -> int:
+    """Study days implied by a per-day rate ("weekdays only" -> 5)."""
+    if re.search(r"\bweekends?\b", low) and not re.search(r"\bweekdays?\b", low):
+        return 2
+    if re.search(r"\bweekdays?\b|\bmon(day)?\s*(-|to)\s*fri(day)?\b", low):
+        return 5
+    return 7
+
+
+def normalize_branch(text: str | None) -> str | None:
+    if not text:
+        return None
+    low = text.lower()
+    for pattern, branch in BRANCHES:
+        if re.search(pattern, low):
+            return branch
+    return text.strip()
+
+
 def extract_rules(text: str) -> IntakeDraft:
     low = text.lower()
     d: dict[str, Any] = {}
@@ -113,11 +135,16 @@ def extract_rules(text: str) -> IntakeDraft:
         d["year"] = 4
     elif m := re.search(r"\b([1-6])(?:st|nd|rd|th)?\s*(?:year|yr)\b", low):
         d["year"] = int(m.group(1))
+    elif m := re.search(r"\b(first|second|third|fourth|fifth)\s*(?:year|yr)\b", low):
+        d["year"] = ORDINALS[m.group(1)]
     if m := re.search(
-        r"(\d+(?:\.\d+)?)\s*(?:hours|hrs|hr|h)\s*(?:a|per|/|every|each)?\s*(week|wk|day)", low
+        r"(\d+(?:\.\d+)?)\s*(?:hours|hour|hrs|hr|h)\s*(?:a|per|/|every|each)?\s*(week|wk|daily|day)",
+        low,
     ):
         hours = float(m.group(1))
-        d["hours_per_week"] = hours * 7 if m.group(2) == "day" else hours
+        d["hours_per_week"] = (
+            hours * days_per_week(low) if m.group(2) in ("day", "daily") else hours
+        )
     if m := re.search(r"(?:in|within|by)\s+(\d+)\s*(months?|weeks?)", low):
         n = int(m.group(1))
         d["max_weeks"] = n * 4 if m.group(2).startswith("month") else n
@@ -142,7 +169,8 @@ SYSTEM = """You extract a student's profile from text for a career-planning tool
 Return ONLY a JSON object with these keys (null when not stated, never guess):
   branch: degree/branch as written, e.g. "CSE", "B.Com", "ECE"
   year: integer year of study 1-6 (final year = 4)
-  hours_per_week: number of study hours per week (convert per-day x7)
+  hours_per_week: study hours per WEEK. Per-day rates: x5 if weekdays only,
+                  x2 if weekends only, otherwise x7
   target_role: the job role they want, as written
   tech_mastery: object mapping each tool/technology they say they know to a level
                 0.3 (beginner), 0.5 (comfortable) or 0.8 (strong)
@@ -179,12 +207,19 @@ def parse_intake(text: str, llm: LLM | None = None) -> dict[str, Any]:
         data = rules.model_dump()
         for k, v in got.model_dump().items():
             if k == "tech_mastery":
-                data[k] = {**rules.tech_mastery, **v}
+                # case-insensitive merge; the LLM's level wins ("basic python" -> 0.3)
+                tm = {name.lower(): (name, m) for name, m in rules.tech_mastery.items()}
+                for name, m in v.items():
+                    shown = tm.get(name.lower(), (name, m))[0]
+                    tm[name.lower()] = (shown, m)
+                data[k] = dict(tm.values())
             elif v not in (None, ""):
                 data[k] = v
         merged = IntakeDraft.model_validate(data)
     role = normalize_role(merged.target_role) or merged.target_role
-    merged = merged.model_copy(update={"target_role": role})
+    merged = merged.model_copy(
+        update={"target_role": role, "branch": normalize_branch(merged.branch)}
+    )
     missing = [f for f in REQUIRED if getattr(merged, f) in (None, "")]
     return {
         "draft": merged,

@@ -215,3 +215,29 @@ def test_explanation_facts_exclude_personal_data(con: Any) -> None:
     s = run(RAVI, llm=None, con=con)
     facts = json.dumps(explain.facts(Roadmap.model_validate(s["roadmap"])))
     assert "Ravi" not in facts
+
+
+@pytest.mark.parametrize(
+    ("text", "hours"),
+    [
+        ("2 hrs daily on weekdays only", 10.0),
+        ("3 hours a day on weekends", 6.0),
+        ("1 hour daily", 7.0),
+        ("12 hrs per week", 12.0),
+    ],
+)
+def test_per_day_hours_respect_study_days(text: str, hours: float) -> None:
+    assert intake.extract_rules(text).hours_per_week == hours
+
+
+def test_word_ordinal_year_and_branch_normalization() -> None:
+    assert intake.extract_rules("third yr student").year == 3
+    assert intake.normalize_branch("btech computer science") == "CSE"
+    assert intake.normalize_branch("Mechatronics") == "Mechatronics"
+
+
+def test_llm_mastery_merges_case_insensitively() -> None:
+    llm = FakeLLM({"branch": "btech computer science", "tech_mastery": {"python": 0.3}})
+    out = intake.parse_intake("3rd year, devops, 10 hrs per week, I know Python", llm)
+    assert out["draft"].tech_mastery == {"Python": 0.3}
+    assert out["draft"].branch == "CSE"

@@ -28,8 +28,8 @@ def facts(r: Roadmap) -> dict[str, Any]:
         "feasible": r.feasibility.feasible,
         "feasibility_fix": r.feasibility.fix,
         "core_readiness": {
-            "start": r.baseline_readiness.core.overall,
-            "end": r.final_readiness.core.overall,
+            "start": f"{r.baseline_readiness.core.overall:.0%}",
+            "end": f"{r.final_readiness.core.overall:.0%}",
         },
         "already_known_skipped": r.skipped_known,
         "top_tech_gaps": [g.tech for g in r.top_tech_gaps[:6]],
@@ -39,7 +39,7 @@ def facts(r: Roadmap) -> dict[str, Any]:
                 "weeks": f"{p.start_week}-{p.end_week}",
                 "milestone": p.title,
                 "items": [n.label for n in r.nodes if n.id in p.node_ids],
-                "core_readiness_after": p.readiness_after.core.overall,
+                "core_readiness_after": f"{p.readiness_after.core.overall:.0%}",
             }
             for p in r.phases
         ],
@@ -53,7 +53,7 @@ def template(r: Roadmap) -> str:
         f"This roadmap takes a {f['background']['branch']} year-{f['background']['year']} "
         f"student towards {r.target_role.title()} in about {f['total_weeks']} weeks at "
         f"{f['hours_per_week']:g} hours per week.",
-        f"Core readiness for the role grows from {start:.0%} to {end:.0%}.",
+        f"Core readiness for the role grows from {start} to {end}.",
     ]
     if f["already_known_skipped"]:
         lines.append(
@@ -64,7 +64,7 @@ def template(r: Roadmap) -> str:
     for p in f["phases"]:
         lines.append(
             f"Phase {p['phase']} (weeks {p['weeks']}): {p['milestone']}. "
-            f"Core readiness afterwards: {p['core_readiness_after']:.0%}."
+            f"Core readiness afterwards: {p['core_readiness_after']}."
         )
     if not f["feasible"] and f["feasibility_fix"]:
         fix = f["feasibility_fix"]

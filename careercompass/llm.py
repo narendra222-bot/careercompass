@@ -105,7 +105,7 @@ def get_llm() -> LLM | None:
     """Configured LLM, or None when no API key is set."""
     from dotenv import load_dotenv
 
-    load_dotenv()
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
     key = os.getenv("LLM_API_KEY") or os.getenv("GROQ_API_KEY")
     if not key:
         return None
