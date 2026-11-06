@@ -1,4 +1,4 @@
-.PHONY: setup build-data test lint catalog-check demo help
+.PHONY: setup build-data test lint catalog-check demo api help
 
 VENV ?= .venv
 PYTHON ?= $(VENV)/bin/python
@@ -13,8 +13,9 @@ help:
 	@echo "  build-data    - Build O*NET database and search indexes (not implemented yet)"
 	@echo "  test          - Run test suite"
 	@echo "  lint          - Run ruff linter/formatter check and mypy type checking"
-	@echo "  catalog-check - Validate O*NET data catalog integrity (not implemented yet)"
-	@echo "  demo          - Run demo career roadmap pipeline (not implemented yet)"
+	@echo "  catalog-check - Validate learning catalog (DAG, links, names) and dump target elements"
+	@echo "  demo          - Regenerate the 3 sample roadmaps + JSON Schema in docs/"
+	@echo "  api           - Run the HTTP API on http://localhost:8000 (docs at /docs)"
 
 setup:
 	@test -d $(VENV) || python3 -m venv $(VENV)
@@ -32,7 +33,11 @@ lint:
 	$(MYPY) careercompass
 
 catalog-check:
-	@echo "catalog-check: not implemented yet"
+	$(PYTEST) -q tests/unit/test_catalog.py tests/unit/test_tech.py
+	$(PYTHON) scripts/dump_elements.py > /dev/null
 
 demo:
-	@echo "demo: not implemented yet"
+	$(PYTHON) scripts/export_schema.py
+
+api:
+	$(VENV)/bin/uvicorn careercompass.api:app --reload --port 8000
