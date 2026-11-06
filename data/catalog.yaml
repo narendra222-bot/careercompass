@@ -1,0 +1,300 @@
+# CareerCompass learning catalog.
+#
+# Every course, link, hour estimate and coverage number here is hand-curated so the
+# planner never invents resources. The LLM may only explain items from this file.
+#
+# Fields
+#   id        unique slug
+#   kind      course | project
+#   roles     role profiles (role_profiles.yaml keys) this item serves
+#   hours     estimated effort for a beginner (editorial)
+#   prereqs   ids that must come first (the catalog must be a DAG)
+#   resources free / open-access links
+#   covers.tech      curated technology name -> mastery gained (0..1)
+#   covers.elements  O*NET skill/knowledge name -> fraction of the required level gained
+#   deliverables     (projects) concrete proof-of-work outputs
+#
+# All numbers: editorial, human_reviewed: false.
+
+meta:
+  version: 1
+  human_reviewed: false
+
+items:
+  # ---------------- foundations ----------------
+  - id: linux-fundamentals
+    title: Linux command line fundamentals
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 25
+    prereqs: []
+    resources:
+      - title: Linux Journey
+        url: https://linuxjourney.com/
+      - title: The Linux Command Line (William Shotts, free book)
+        url: https://linuxcommand.org/tlcl.php
+    covers:
+      tech: {Linux: 0.6, Bash: 0.2}
+      elements: {Computers and Electronics: 0.15, Operations Monitoring: 0.1}
+
+  - id: bash-scripting
+    title: Shell scripting and automation
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 15
+    prereqs: [linux-fundamentals]
+    resources:
+      - title: GNU Bash Reference Manual
+        url: https://www.gnu.org/software/bash/manual/
+      - title: LinuxCommand.org - Writing shell scripts
+        url: https://linuxcommand.org/lc3_writing_shell_scripts.php
+    covers:
+      tech: {Bash: 0.6, Linux: 0.1}
+      elements: {Programming: 0.1, Troubleshooting: 0.1}
+
+  - id: git-version-control
+    title: Git and collaborative version control
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
+    hours: 12
+    prereqs: []
+    resources:
+      - title: Pro Git (free book)
+        url: https://git-scm.com/book/en/v2
+      - title: Learn Git Branching (interactive)
+        url: https://learngitbranching.js.org/
+    covers:
+      tech: {Git: 0.7}
+      elements: {Quality Control Analysis: 0.05}
+
+  - id: python-automation
+    title: Python for automation
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
+    hours: 30
+    prereqs: []
+    resources:
+      - title: The Python Tutorial (official)
+        url: https://docs.python.org/3/tutorial/
+      - title: Automate the Boring Stuff with Python (free online)
+        url: https://automatetheboringstuff.com/
+    covers:
+      tech: {Python: 0.6}
+      elements: {Programming: 0.2, Complex Problem Solving: 0.05}
+
+  - id: networking-basics
+    title: Networking for cloud engineers (DNS, HTTP, TCP/IP, TLS)
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 15
+    prereqs: [linux-fundamentals]
+    resources:
+      - title: Cloudflare Learning Center
+        url: https://www.cloudflare.com/learning/
+    covers:
+      tech: {}
+      elements: {Computers and Electronics: 0.1, Systems Analysis: 0.1, Troubleshooting: 0.05}
+
+  # ---------------- containers & CI/CD ----------------
+  - id: docker-containers
+    title: Containers with Docker
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 20
+    prereqs: [linux-fundamentals]
+    resources:
+      - title: Docker Get Started (official)
+        url: https://docs.docker.com/get-started/
+    covers:
+      tech: {Docker: 0.6}
+      elements: {Systems Analysis: 0.05, Engineering and Technology: 0.05}
+
+  - id: ci-github-actions
+    title: CI/CD with GitHub Actions
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 12
+    prereqs: [git-version-control, docker-containers]
+    resources:
+      - title: GitHub Actions documentation
+        url: https://docs.github.com/en/actions
+    covers:
+      tech: {GitHub Actions: 0.6, Git: 0.1}
+      elements: {Quality Control Analysis: 0.1, Operations Analysis: 0.05}
+
+  - id: jenkins-pipelines
+    title: Jenkins pipelines
+    kind: course
+    roles: [devops engineer]
+    hours: 10
+    prereqs: [ci-github-actions]
+    resources:
+      - title: Jenkins tutorials (official)
+        url: https://www.jenkins.io/doc/tutorials/
+    covers:
+      tech: {Jenkins: 0.5}
+      elements: {Quality Control Analysis: 0.05}
+
+  # ---------------- cloud & infrastructure as code ----------------
+  - id: aws-core
+    title: AWS core services (IAM, EC2, S3, VPC)
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 30
+    prereqs: [networking-basics]
+    resources:
+      - title: AWS Skill Builder (free digital courses)
+        url: https://explore.skillbuilder.aws/
+      - title: AWS documentation
+        url: https://docs.aws.amazon.com/
+    covers:
+      tech: {AWS: 0.5}
+      elements: {Systems Analysis: 0.1, Systems Evaluation: 0.1, Engineering and Technology: 0.05}
+
+  - id: terraform-iac
+    title: Infrastructure as Code with Terraform
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 20
+    prereqs: [aws-core, git-version-control]
+    resources:
+      - title: HashiCorp Terraform tutorials
+        url: https://developer.hashicorp.com/terraform/tutorials
+    covers:
+      tech: {Terraform: 0.6, AWS: 0.1}
+      elements: {Technology Design: 0.1, Systems Analysis: 0.05}
+
+  - id: ansible-config
+    title: Configuration management with Ansible
+    kind: course
+    roles: [devops engineer, site reliability engineer]
+    hours: 12
+    prereqs: [linux-fundamentals, python-automation]
+    resources:
+      - title: Ansible getting started (official)
+        url: https://docs.ansible.com/ansible/latest/getting_started/index.html
+    covers:
+      tech: {Ansible: 0.6}
+      elements: {Operations Analysis: 0.05}
+
+  # ---------------- orchestration ----------------
+  - id: kubernetes-core
+    title: Kubernetes fundamentals
+    kind: course
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 30
+    prereqs: [docker-containers, networking-basics]
+    resources:
+      - title: Kubernetes Basics tutorial (official)
+        url: https://kubernetes.io/docs/tutorials/kubernetes-basics/
+      - title: Kubernetes concepts
+        url: https://kubernetes.io/docs/concepts/
+    covers:
+      tech: {Kubernetes: 0.5}
+      elements: {Systems Analysis: 0.1, Systems Evaluation: 0.05, Troubleshooting: 0.1}
+
+  - id: helm-charts
+    title: Packaging apps with Helm
+    kind: course
+    roles: [devops engineer, site reliability engineer]
+    hours: 8
+    prereqs: [kubernetes-core]
+    resources:
+      - title: Helm quickstart (official)
+        url: https://helm.sh/docs/intro/quickstart/
+    covers:
+      tech: {Helm: 0.6, Kubernetes: 0.1}
+      elements: {}
+
+  - id: argocd-gitops
+    title: GitOps with Argo CD
+    kind: course
+    roles: [devops engineer, site reliability engineer]
+    hours: 8
+    prereqs: [helm-charts, git-version-control]
+    resources:
+      - title: Argo CD getting started (official)
+        url: https://argo-cd.readthedocs.io/en/stable/getting_started/
+    covers:
+      tech: {Argo CD: 0.6}
+      elements: {Operations Analysis: 0.05}
+
+  # ---------------- observability ----------------
+  - id: prometheus-grafana
+    title: Monitoring with Prometheus and Grafana
+    kind: course
+    roles: [devops engineer, site reliability engineer]
+    hours: 15
+    prereqs: [kubernetes-core]
+    resources:
+      - title: Prometheus overview (official)
+        url: https://prometheus.io/docs/introduction/overview/
+      - title: Grafana tutorials (official)
+        url: https://grafana.com/tutorials/
+    covers:
+      tech: {Prometheus: 0.5, Grafana: 0.5}
+      elements: {Monitoring: 0.15, Operations Monitoring: 0.15, Systems Evaluation: 0.05}
+
+  # ---------------- proof-of-work projects ----------------
+  - id: proj-containerize-3tier
+    title: "Project 1: Production-style containerized 3-tier app"
+    kind: project
+    roles: [devops engineer, cloud engineer]
+    hours: 20
+    prereqs: [docker-containers, bash-scripting, git-version-control]
+    resources: []
+    deliverables:
+      - Multi-stage Dockerfiles for a web API, worker and Postgres-backed service
+      - docker compose stack with health checks, named volumes and a .env template
+      - Makefile + Bash scripts for build, seed and backup
+      - README with architecture diagram and image-size before/after numbers
+    covers:
+      tech: {Docker: 0.2, Bash: 0.1, Git: 0.1}
+      elements: {Technology Design: 0.1, Troubleshooting: 0.1}
+
+  - id: proj-ci-pipeline
+    title: "Project 2: CI pipeline with tests, image scan and registry push"
+    kind: project
+    roles: [devops engineer, cloud engineer, site reliability engineer]
+    hours: 15
+    prereqs: [proj-containerize-3tier, ci-github-actions, python-automation]
+    resources: []
+    deliverables:
+      - GitHub Actions workflow - lint, unit tests, build, Trivy image scan, push to GHCR
+      - Branch protection requiring green checks; cached dependencies
+      - Status badges and a short write-up of pipeline duration before/after caching
+    covers:
+      tech: {GitHub Actions: 0.2, Python: 0.1}
+      elements: {Quality Control Analysis: 0.15, Operations Analysis: 0.05}
+
+  - id: proj-terraform-aws
+    title: "Project 3: AWS environment as code"
+    kind: project
+    roles: [devops engineer, cloud engineer]
+    hours: 25
+    prereqs: [terraform-iac, ansible-config, proj-ci-pipeline]
+    resources: []
+    deliverables:
+      - Terraform modules for VPC, subnets, security groups and an EC2/ECS service
+      - Remote state in S3 with locking; separate dev and prod workspaces
+      - Ansible playbook that configures hosts idempotently
+      - Plan output posted on every pull request by CI; free-tier cost notes
+    covers:
+      tech: {Terraform: 0.2, AWS: 0.2, Ansible: 0.2}
+      elements: {Systems Analysis: 0.1, Technology Design: 0.1, Systems Evaluation: 0.05}
+
+  - id: proj-k8s-gitops-observability
+    title: "Project 4: GitOps-deployed Kubernetes app with monitoring and alerts"
+    kind: project
+    roles: [devops engineer, site reliability engineer]
+    hours: 30
+    prereqs: [argocd-gitops, prometheus-grafana, proj-ci-pipeline]
+    resources: []
+    deliverables:
+      - Helm chart for the Project 1 app deployed to kind or k3s
+      - Argo CD application syncing from a Git repo; rollback demonstrated
+      - Prometheus scraping app metrics; Grafana dashboard with latency and error rate
+      - One alert rule plus a written incident drill (break it, detect it, fix it)
+    covers:
+      tech: {Kubernetes: 0.2, Helm: 0.2, Argo CD: 0.2, Prometheus: 0.2, Grafana: 0.2}
+      elements: {Monitoring: 0.1, Troubleshooting: 0.1, Operations Monitoring: 0.1}
