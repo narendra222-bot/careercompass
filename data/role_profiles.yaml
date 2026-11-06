@@ -113,3 +113,23 @@ software development engineer:
       alpha: 1.00
 
 
+data analyst:
+  human_reviewed: false
+  aliases:
+    - "data analyst"
+    - "business analyst data"
+    - "bi analyst"
+    - "analytics"
+  socs:
+    - soc: "15-2051.01"
+      title: "Business Intelligence Analysts"
+      alpha: 0.45
+    - soc: "15-2051.00"
+      title: "Data Scientists"
+      alpha: 0.25
+    - soc: "13-1161.00"
+      title: "Market Research Analysts and Marketing Specialists"
+      alpha: 0.15
+    - soc: "15-2041.00"
+      title: "Statisticians"
+      alpha: 0.15

@@ -117,46 +117,46 @@
     },
     {
       "phase": 3,
-      "title": "Project: GitOps-deployed Kubernetes app with monitoring and alerts",
-      "milestone": "proj-k8s-gitops-observability",
+      "title": "Project: AWS environment as code",
+      "milestone": "proj-terraform-aws",
       "start_week": 10,
-      "end_week": 21,
-      "hours": 106.0,
+      "end_week": 20,
+      "hours": 102.0,
       "node_ids": [
         "networking-basics",
-        "kubernetes-core",
-        "helm-charts",
-        "argocd-gitops",
-        "prometheus-grafana",
-        "proj-k8s-gitops-observability"
+        "aws-core",
+        "ansible-config",
+        "terraform-iac",
+        "proj-terraform-aws"
       ],
       "readiness_after": {
         "core": {
-          "overall": 0.5763,
-          "tech": 0.5807,
-          "skills": 0.5697
+          "overall": 0.5148,
+          "tech": 0.4892,
+          "skills": 0.5533
         },
         "onet": {
-          "overall": 0.3663,
-          "skill": 0.4236,
-          "knowledge": 0.3568,
+          "overall": 0.3444,
+          "skill": 0.4144,
+          "knowledge": 0.3605,
           "ability": 0.2282,
-          "technology": 0.3634
+          "technology": 0.3062
         }
       }
     },
     {
       "phase": 4,
-      "title": "Project: AWS environment as code",
-      "milestone": "proj-terraform-aws",
-      "start_week": 21,
+      "title": "Project: GitOps-deployed Kubernetes app with monitoring and alerts",
+      "milestone": "proj-k8s-gitops-observability",
+      "start_week": 20,
       "end_week": 29,
-      "hours": 87.0,
+      "hours": 91.0,
       "node_ids": [
-        "aws-core",
-        "ansible-config",
-        "terraform-iac",
-        "proj-terraform-aws"
+        "kubernetes-core",
+        "helm-charts",
+        "argocd-gitops",
+        "prometheus-grafana",
+        "proj-k8s-gitops-observability"
       ],
       "readiness_after": {
         "core": {
@@ -334,12 +334,104 @@
       ]
     },
     {
-      "id": "kubernetes-core",
-      "label": "Kubernetes fundamentals",
+      "id": "aws-core",
+      "label": "AWS core services (IAM, EC2, S3, VPC)",
       "kind": "course",
       "phase": 3,
       "start_week": 12,
       "end_week": 15,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "AWS Skill Builder (free digital courses)",
+          "url": "https://explore.skillbuilder.aws/"
+        },
+        {
+          "title": "AWS documentation",
+          "url": "https://docs.aws.amazon.com/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "AWS",
+        "Engineering and Technology",
+        "Systems Analysis",
+        "Systems Evaluation"
+      ]
+    },
+    {
+      "id": "ansible-config",
+      "label": "Configuration management with Ansible",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 15,
+      "end_week": 16,
+      "hours": 12.0,
+      "resources": [
+        {
+          "title": "Ansible getting started (official)",
+          "url": "https://docs.ansible.com/ansible/latest/getting_started/index.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Ansible",
+        "Operations Analysis"
+      ]
+    },
+    {
+      "id": "terraform-iac",
+      "label": "Infrastructure as Code with Terraform",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 16,
+      "end_week": 18,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "HashiCorp Terraform tutorials",
+          "url": "https://developer.hashicorp.com/terraform/tutorials"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "AWS",
+        "Terraform",
+        "Systems Analysis",
+        "Technology Design"
+      ]
+    },
+    {
+      "id": "proj-terraform-aws",
+      "label": "Project: AWS environment as code",
+      "kind": "project",
+      "phase": 3,
+      "start_week": 18,
+      "end_week": 20,
+      "hours": 25.0,
+      "resources": [],
+      "deliverables": [
+        "Terraform modules for VPC, subnets, security groups and an EC2/ECS service",
+        "Remote state in S3 with locking; separate dev and prod workspaces",
+        "Ansible playbook that configures hosts idempotently",
+        "Plan output posted on every pull request by CI; free-tier cost notes"
+      ],
+      "skills_gained": [
+        "AWS",
+        "Ansible",
+        "Terraform",
+        "Systems Analysis",
+        "Systems Evaluation",
+        "Technology Design"
+      ]
+    },
+    {
+      "id": "kubernetes-core",
+      "label": "Kubernetes fundamentals",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 20,
+      "end_week": 23,
       "hours": 30.0,
       "resources": [
         {
@@ -363,9 +455,9 @@
       "id": "helm-charts",
       "label": "Packaging apps with Helm",
       "kind": "course",
-      "phase": 3,
-      "start_week": 15,
-      "end_week": 15,
+      "phase": 4,
+      "start_week": 23,
+      "end_week": 24,
       "hours": 8.0,
       "resources": [
         {
@@ -383,9 +475,9 @@
       "id": "argocd-gitops",
       "label": "GitOps with Argo CD",
       "kind": "course",
-      "phase": 3,
-      "start_week": 16,
-      "end_week": 16,
+      "phase": 4,
+      "start_week": 24,
+      "end_week": 25,
       "hours": 8.0,
       "resources": [
         {
@@ -403,9 +495,9 @@
       "id": "prometheus-grafana",
       "label": "Monitoring with Prometheus and Grafana",
       "kind": "course",
-      "phase": 3,
-      "start_week": 16,
-      "end_week": 18,
+      "phase": 4,
+      "start_week": 25,
+      "end_week": 26,
       "hours": 15.0,
       "resources": [
         {
@@ -430,9 +522,9 @@
       "id": "proj-k8s-gitops-observability",
       "label": "Project: GitOps-deployed Kubernetes app with monitoring and alerts",
       "kind": "project",
-      "phase": 3,
-      "start_week": 18,
-      "end_week": 21,
+      "phase": 4,
+      "start_week": 27,
+      "end_week": 29,
       "hours": 30.0,
       "resources": [],
       "deliverables": [
@@ -450,98 +542,6 @@
         "Monitoring",
         "Operations Monitoring",
         "Troubleshooting"
-      ]
-    },
-    {
-      "id": "aws-core",
-      "label": "AWS core services (IAM, EC2, S3, VPC)",
-      "kind": "course",
-      "phase": 4,
-      "start_week": 21,
-      "end_week": 24,
-      "hours": 30.0,
-      "resources": [
-        {
-          "title": "AWS Skill Builder (free digital courses)",
-          "url": "https://explore.skillbuilder.aws/"
-        },
-        {
-          "title": "AWS documentation",
-          "url": "https://docs.aws.amazon.com/"
-        }
-      ],
-      "deliverables": [],
-      "skills_gained": [
-        "AWS",
-        "Engineering and Technology",
-        "Systems Analysis",
-        "Systems Evaluation"
-      ]
-    },
-    {
-      "id": "ansible-config",
-      "label": "Configuration management with Ansible",
-      "kind": "course",
-      "phase": 4,
-      "start_week": 24,
-      "end_week": 25,
-      "hours": 12.0,
-      "resources": [
-        {
-          "title": "Ansible getting started (official)",
-          "url": "https://docs.ansible.com/ansible/latest/getting_started/index.html"
-        }
-      ],
-      "deliverables": [],
-      "skills_gained": [
-        "Ansible",
-        "Operations Analysis"
-      ]
-    },
-    {
-      "id": "terraform-iac",
-      "label": "Infrastructure as Code with Terraform",
-      "kind": "course",
-      "phase": 4,
-      "start_week": 25,
-      "end_week": 27,
-      "hours": 20.0,
-      "resources": [
-        {
-          "title": "HashiCorp Terraform tutorials",
-          "url": "https://developer.hashicorp.com/terraform/tutorials"
-        }
-      ],
-      "deliverables": [],
-      "skills_gained": [
-        "AWS",
-        "Terraform",
-        "Systems Analysis",
-        "Technology Design"
-      ]
-    },
-    {
-      "id": "proj-terraform-aws",
-      "label": "Project: AWS environment as code",
-      "kind": "project",
-      "phase": 4,
-      "start_week": 27,
-      "end_week": 29,
-      "hours": 25.0,
-      "resources": [],
-      "deliverables": [
-        "Terraform modules for VPC, subnets, security groups and an EC2/ECS service",
-        "Remote state in S3 with locking; separate dev and prod workspaces",
-        "Ansible playbook that configures hosts idempotently",
-        "Plan output posted on every pull request by CI; free-tier cost notes"
-      ],
-      "skills_gained": [
-        "AWS",
-        "Ansible",
-        "Terraform",
-        "Systems Analysis",
-        "Systems Evaluation",
-        "Technology Design"
       ]
     },
     {
@@ -801,14 +801,14 @@
       "kind": "milestone"
     },
     {
-      "id": "proj-k8s-gitops-observability->goal:devops-engineer",
-      "source": "proj-k8s-gitops-observability",
+      "id": "proj-terraform-aws->goal:devops-engineer",
+      "source": "proj-terraform-aws",
       "target": "goal:devops-engineer",
       "kind": "milestone"
     },
     {
-      "id": "proj-terraform-aws->goal:devops-engineer",
-      "source": "proj-terraform-aws",
+      "id": "proj-k8s-gitops-observability->goal:devops-engineer",
+      "source": "proj-k8s-gitops-observability",
       "target": "goal:devops-engineer",
       "kind": "milestone"
     }

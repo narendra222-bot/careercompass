@@ -1,0 +1,743 @@
+{
+  "schema_version": "1.0",
+  "student": {
+    "name": "Arjun (sample)",
+    "branch": "CSE",
+    "year": 4,
+    "hours_per_week": 12.0,
+    "target_role": "machine learning engineer",
+    "tech_mastery": {
+      "Python": 0.6,
+      "Git": 0.6,
+      "SQL": 0.4,
+      "Linux": 0.6
+    },
+    "max_weeks": null
+  },
+  "target_role": "machine learning engineer",
+  "soc_alignment": [
+    {
+      "soc": "15-2051.00",
+      "title": "Data Scientists",
+      "alpha": 0.5
+    },
+    {
+      "soc": "15-1252.00",
+      "title": "Software Developers",
+      "alpha": 0.3
+    },
+    {
+      "soc": "15-1299.08",
+      "title": "Computer Systems Engineers/Architects",
+      "alpha": 0.2
+    }
+  ],
+  "baseline_readiness": {
+    "core": {
+      "overall": 0.2993,
+      "tech": 0.1606,
+      "skills": 0.5074
+    },
+    "onet": {
+      "overall": 0.2836,
+      "skill": 0.4181,
+      "knowledge": 0.3913,
+      "ability": 0.2513,
+      "technology": 0.1004
+    }
+  },
+  "final_readiness": {
+    "core": {
+      "overall": 0.725,
+      "tech": 0.7222,
+      "skills": 0.7293
+    },
+    "onet": {
+      "overall": 0.4452,
+      "skill": 0.4894,
+      "knowledge": 0.4605,
+      "ability": 0.2513,
+      "technology": 0.4518
+    }
+  },
+  "target_readiness": 0.8,
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Project: End-to-end tabular ML model with a model card",
+      "milestone": "proj-tabular-ml",
+      "start_week": 1,
+      "end_week": 14,
+      "hours": 160.0,
+      "node_ids": [
+        "math-for-ml",
+        "python-data-analysis",
+        "sql-for-analysis",
+        "statistics-foundations",
+        "ml-foundations-sklearn",
+        "proj-tabular-ml"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.5082,
+          "tech": 0.3865,
+          "skills": 0.6908
+        },
+        "onet": {
+          "overall": 0.3652,
+          "skill": 0.4757,
+          "knowledge": 0.4512,
+          "ability": 0.2513,
+          "technology": 0.2418
+        }
+      }
+    },
+    {
+      "phase": 2,
+      "title": "Project: Containerized model-serving API with tests",
+      "milestone": "proj-ml-service",
+      "start_week": 14,
+      "end_week": 18,
+      "hours": 50.0,
+      "node_ids": [
+        "docker-containers",
+        "fastapi-serving",
+        "proj-ml-service"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.5878,
+          "tech": 0.509,
+          "skills": 0.7059
+        },
+        "onet": {
+          "overall": 0.3946,
+          "skill": 0.4809,
+          "knowledge": 0.455,
+          "ability": 0.2513,
+          "technology": 0.3184
+        }
+      }
+    },
+    {
+      "phase": 3,
+      "title": "Project: Fine-tune a pretrained model with tracked experiments",
+      "milestone": "proj-dl-finetune",
+      "start_week": 18,
+      "end_week": 26,
+      "hours": 100.0,
+      "node_ids": [
+        "deep-learning-pytorch",
+        "hf-transformers",
+        "mlops-mlflow",
+        "proj-dl-finetune"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.6993,
+          "tech": 0.6793,
+          "skills": 0.7293
+        },
+        "onet": {
+          "overall": 0.4358,
+          "skill": 0.4894,
+          "knowledge": 0.4605,
+          "ability": 0.2513,
+          "technology": 0.4249
+        }
+      }
+    },
+    {
+      "phase": 4,
+      "title": "Electives",
+      "milestone": null,
+      "start_week": 26,
+      "end_week": 28,
+      "hours": 20.0,
+      "node_ids": [
+        "tensorflow-keras"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.725,
+          "tech": 0.7222,
+          "skills": 0.7293
+        },
+        "onet": {
+          "overall": 0.4452,
+          "skill": 0.4894,
+          "knowledge": 0.4605,
+          "ability": 0.2513,
+          "technology": 0.4518
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "math-for-ml",
+      "label": "Mathematics for machine learning (linear algebra, calculus, probability)",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 1,
+      "end_week": 3,
+      "hours": 35.0,
+      "resources": [
+        {
+          "title": "Mathematics for Machine Learning (free book)",
+          "url": "https://mml-book.github.io/"
+        },
+        {
+          "title": "Khan Academy - Linear algebra",
+          "url": "https://www.khanacademy.org/math/linear-algebra"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Complex Problem Solving",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": "python-data-analysis",
+      "label": "Data analysis with pandas, NumPy and Jupyter",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 3,
+      "end_week": 5,
+      "hours": 25.0,
+      "resources": [
+        {
+          "title": "pandas - Getting started (official)",
+          "url": "https://pandas.pydata.org/docs/getting_started/index.html"
+        },
+        {
+          "title": "Python Data Science Handbook (free online)",
+          "url": "https://jakevdp.github.io/PythonDataScienceHandbook/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Jupyter Notebook",
+        "NumPy",
+        "Python",
+        "pandas",
+        "Critical Thinking",
+        "Programming"
+      ]
+    },
+    {
+      "id": "sql-for-analysis",
+      "label": "SQL for analysis (joins, aggregation, window functions)",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 6,
+      "end_week": 7,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "SQLBolt (interactive lessons)",
+          "url": "https://sqlbolt.com/"
+        },
+        {
+          "title": "PostgreSQL tutorial (official docs)",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "SQL",
+        "Complex Problem Solving",
+        "Programming"
+      ]
+    },
+    {
+      "id": "statistics-foundations",
+      "label": "Statistics and probability foundations",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 7,
+      "end_week": 9,
+      "hours": 25.0,
+      "resources": [
+        {
+          "title": "Khan Academy - Statistics and probability",
+          "url": "https://www.khanacademy.org/math/statistics-probability"
+        },
+        {
+          "title": "OpenIntro Statistics (free textbook)",
+          "url": "https://www.openintro.org/book/os/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Critical Thinking",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": "ml-foundations-sklearn",
+      "label": "Machine learning foundations with scikit-learn",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 9,
+      "end_week": 12,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "Google Machine Learning Crash Course",
+          "url": "https://developers.google.com/machine-learning/crash-course"
+        },
+        {
+          "title": "scikit-learn tutorials (official)",
+          "url": "https://scikit-learn.org/stable/tutorial/index.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Scikit-learn",
+        "Critical Thinking",
+        "Mathematics",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "proj-tabular-ml",
+      "label": "Project: End-to-end tabular ML model with a model card",
+      "kind": "project",
+      "phase": 1,
+      "start_week": 12,
+      "end_week": 14,
+      "hours": 25.0,
+      "resources": [],
+      "deliverables": [
+        "scikit-learn Pipeline with preprocessing, cross-validation and a tuned baseline",
+        "Data pulled with SQL; train/validation/test split documented to avoid leakage",
+        "Model card covering metrics, error analysis and fairness slices"
+      ],
+      "skills_gained": [
+        "SQL",
+        "Scikit-learn",
+        "pandas",
+        "Critical Thinking",
+        "Systems Evaluation"
+      ]
+    },
+    {
+      "id": "docker-containers",
+      "label": "Containers with Docker",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 14,
+      "end_week": 15,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "Docker Get Started (official)",
+          "url": "https://docs.docker.com/get-started/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Docker",
+        "Engineering and Technology",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "fastapi-serving",
+      "label": "Serving models as APIs with FastAPI",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 16,
+      "end_week": 16,
+      "hours": 10.0,
+      "resources": [
+        {
+          "title": "FastAPI tutorial (official)",
+          "url": "https://fastapi.tiangolo.com/tutorial/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "FastAPI",
+        "Programming",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "proj-ml-service",
+      "label": "Project: Containerized model-serving API with tests",
+      "kind": "project",
+      "phase": 2,
+      "start_week": 16,
+      "end_week": 18,
+      "hours": 20.0,
+      "resources": [],
+      "deliverables": [
+        "FastAPI service exposing /predict and /health for the tabular model",
+        "Dockerfile, pinned dependencies, and pytest suite run in CI",
+        "Load test numbers (latency p50/p95) and a basic input-drift check"
+      ],
+      "skills_gained": [
+        "Docker",
+        "FastAPI",
+        "Linux",
+        "Quality Control Analysis",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "deep-learning-pytorch",
+      "label": "Deep learning with PyTorch",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 18,
+      "end_week": 21,
+      "hours": 40.0,
+      "resources": [
+        {
+          "title": "PyTorch tutorials (official)",
+          "url": "https://pytorch.org/tutorials/"
+        },
+        {
+          "title": "Dive into Deep Learning (free book)",
+          "url": "https://d2l.ai/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "PyTorch",
+        "Mathematics",
+        "Programming"
+      ]
+    },
+    {
+      "id": "hf-transformers",
+      "label": "NLP and LLMs with Hugging Face Transformers",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 21,
+      "end_week": 23,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "Hugging Face Learn (free courses)",
+          "url": "https://huggingface.co/learn"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Hugging Face Transformers",
+        "Systems Analysis"
+      ]
+    },
+    {
+      "id": "mlops-mlflow",
+      "label": "Experiment tracking and model registry with MLflow",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 23,
+      "end_week": 24,
+      "hours": 10.0,
+      "resources": [
+        {
+          "title": "MLflow documentation",
+          "url": "https://mlflow.org/docs/latest/index.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "MLflow",
+        "Quality Control Analysis"
+      ]
+    },
+    {
+      "id": "proj-dl-finetune",
+      "label": "Project: Fine-tune a pretrained model with tracked experiments",
+      "kind": "project",
+      "phase": 3,
+      "start_week": 24,
+      "end_week": 26,
+      "hours": 30.0,
+      "resources": [],
+      "deliverables": [
+        "Fine-tuned transformer (or CNN) on a small public dataset with a clear baseline",
+        "Every run logged in MLflow - parameters, metrics, artifacts - and a comparison table",
+        "Write-up of what improved the metric and what did not"
+      ],
+      "skills_gained": [
+        "Hugging Face Transformers",
+        "MLflow",
+        "PyTorch",
+        "Complex Problem Solving",
+        "Systems Evaluation"
+      ]
+    },
+    {
+      "id": "tensorflow-keras",
+      "label": "Deep learning with TensorFlow and Keras",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 26,
+      "end_week": 28,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "TensorFlow tutorials (official)",
+          "url": "https://www.tensorflow.org/tutorials"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "TensorFlow",
+        "Programming"
+      ]
+    },
+    {
+      "id": "git-version-control",
+      "label": "Git and collaborative version control",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "linux-fundamentals",
+      "label": "Linux command line fundamentals",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "python-automation",
+      "label": "Python for automation",
+      "kind": "known",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    },
+    {
+      "id": "goal:machine-learning-engineer",
+      "label": "Machine Learning Engineer",
+      "kind": "goal",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "ml-foundations-sklearn->deep-learning-pytorch",
+      "source": "ml-foundations-sklearn",
+      "target": "deep-learning-pytorch",
+      "kind": "prereq"
+    },
+    {
+      "id": "linux-fundamentals->docker-containers",
+      "source": "linux-fundamentals",
+      "target": "docker-containers",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-automation->fastapi-serving",
+      "source": "python-automation",
+      "target": "fastapi-serving",
+      "kind": "prereq"
+    },
+    {
+      "id": "deep-learning-pytorch->hf-transformers",
+      "source": "deep-learning-pytorch",
+      "target": "hf-transformers",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-data-analysis->ml-foundations-sklearn",
+      "source": "python-data-analysis",
+      "target": "ml-foundations-sklearn",
+      "kind": "prereq"
+    },
+    {
+      "id": "statistics-foundations->ml-foundations-sklearn",
+      "source": "statistics-foundations",
+      "target": "ml-foundations-sklearn",
+      "kind": "prereq"
+    },
+    {
+      "id": "math-for-ml->ml-foundations-sklearn",
+      "source": "math-for-ml",
+      "target": "ml-foundations-sklearn",
+      "kind": "prereq"
+    },
+    {
+      "id": "ml-foundations-sklearn->mlops-mlflow",
+      "source": "ml-foundations-sklearn",
+      "target": "mlops-mlflow",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->mlops-mlflow",
+      "source": "git-version-control",
+      "target": "mlops-mlflow",
+      "kind": "prereq"
+    },
+    {
+      "id": "hf-transformers->proj-dl-finetune",
+      "source": "hf-transformers",
+      "target": "proj-dl-finetune",
+      "kind": "prereq"
+    },
+    {
+      "id": "mlops-mlflow->proj-dl-finetune",
+      "source": "mlops-mlflow",
+      "target": "proj-dl-finetune",
+      "kind": "prereq"
+    },
+    {
+      "id": "fastapi-serving->proj-ml-service",
+      "source": "fastapi-serving",
+      "target": "proj-ml-service",
+      "kind": "prereq"
+    },
+    {
+      "id": "docker-containers->proj-ml-service",
+      "source": "docker-containers",
+      "target": "proj-ml-service",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-tabular-ml->proj-ml-service",
+      "source": "proj-tabular-ml",
+      "target": "proj-ml-service",
+      "kind": "prereq"
+    },
+    {
+      "id": "ml-foundations-sklearn->proj-tabular-ml",
+      "source": "ml-foundations-sklearn",
+      "target": "proj-tabular-ml",
+      "kind": "prereq"
+    },
+    {
+      "id": "sql-for-analysis->proj-tabular-ml",
+      "source": "sql-for-analysis",
+      "target": "proj-tabular-ml",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->proj-tabular-ml",
+      "source": "git-version-control",
+      "target": "proj-tabular-ml",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-automation->python-data-analysis",
+      "source": "python-automation",
+      "target": "python-data-analysis",
+      "kind": "prereq"
+    },
+    {
+      "id": "ml-foundations-sklearn->tensorflow-keras",
+      "source": "ml-foundations-sklearn",
+      "target": "tensorflow-keras",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-tabular-ml->goal:machine-learning-engineer",
+      "source": "proj-tabular-ml",
+      "target": "goal:machine-learning-engineer",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-ml-service->goal:machine-learning-engineer",
+      "source": "proj-ml-service",
+      "target": "goal:machine-learning-engineer",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-dl-finetune->goal:machine-learning-engineer",
+      "source": "proj-dl-finetune",
+      "target": "goal:machine-learning-engineer",
+      "kind": "milestone"
+    }
+  ],
+  "top_tech_gaps": [
+    {
+      "tech": "Docker",
+      "gap": 0.0454
+    },
+    {
+      "tech": "FastAPI",
+      "gap": 0.0448
+    },
+    {
+      "tech": "Hugging Face Transformers",
+      "gap": 0.0448
+    },
+    {
+      "tech": "PyTorch",
+      "gap": 0.0448
+    },
+    {
+      "tech": "TensorFlow",
+      "gap": 0.0448
+    },
+    {
+      "tech": "NumPy",
+      "gap": 0.0438
+    },
+    {
+      "tech": "Scikit-learn",
+      "gap": 0.0438
+    },
+    {
+      "tech": "pandas",
+      "gap": 0.0438
+    },
+    {
+      "tech": "Jupyter Notebook",
+      "gap": 0.0436
+    },
+    {
+      "tech": "MLflow",
+      "gap": 0.0436
+    }
+  ],
+  "skipped_known": [
+    "git-version-control",
+    "linux-fundamentals",
+    "python-automation"
+  ],
+  "dropped_for_time": [],
+  "unmatched_tech": [],
+  "feasibility": {
+    "feasible": true,
+    "total_hours": 330.0,
+    "total_weeks": 28,
+    "hours_per_week": 12.0,
+    "max_weeks": null,
+    "fix": null
+  },
+  "explanation": null,
+  "provenance": {
+    "generator": "deterministic-planner",
+    "data": "O*NET 31.0 Database (onetcenter.org), CC BY 4.0",
+    "editorial_constants_human_reviewed": false
+  }
+}

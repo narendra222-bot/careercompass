@@ -25,7 +25,7 @@ items:
   - id: linux-fundamentals
     title: Linux command line fundamentals
     kind: course
-    roles: [devops engineer, cloud engineer, site reliability engineer]
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
     hours: 25
     prereqs: []
     resources:
@@ -55,7 +55,7 @@ items:
   - id: git-version-control
     title: Git and collaborative version control
     kind: course
-    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer, data analyst]
     hours: 12
     prereqs: []
     resources:
@@ -70,7 +70,7 @@ items:
   - id: python-automation
     title: Python for automation
     kind: course
-    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer, data analyst]
     hours: 30
     prereqs: []
     resources:
@@ -99,7 +99,7 @@ items:
   - id: docker-containers
     title: Containers with Docker
     kind: course
-    roles: [devops engineer, cloud engineer, site reliability engineer]
+    roles: [devops engineer, cloud engineer, site reliability engineer, machine learning engineer]
     hours: 20
     prereqs: [linux-fundamentals]
     resources:
@@ -298,3 +298,295 @@ items:
     covers:
       tech: {Kubernetes: 0.2, Helm: 0.2, Argo CD: 0.2, Prometheus: 0.2, Grafana: 0.2}
       elements: {Monitoring: 0.1, Troubleshooting: 0.1, Operations Monitoring: 0.1}
+
+  # =====================================================================
+  # Data analyst / machine learning engineer
+  # =====================================================================
+  - id: excel-analysis
+    title: Excel for data analysis (formulas, pivot tables, charts)
+    kind: course
+    roles: [data analyst]
+    hours: 20
+    prereqs: []
+    resources:
+      - title: Microsoft Excel help and learning
+        url: https://support.microsoft.com/en-us/excel
+    covers:
+      tech: {Excel: 0.6}
+      elements: {Mathematics: 0.05, Computers and Electronics: 0.05}
+
+  - id: statistics-foundations
+    title: Statistics and probability foundations
+    kind: course
+    roles: [data analyst, machine learning engineer]
+    hours: 25
+    prereqs: []
+    resources:
+      - title: Khan Academy - Statistics and probability
+        url: https://www.khanacademy.org/math/statistics-probability
+      - title: OpenIntro Statistics (free textbook)
+        url: https://www.openintro.org/book/os/
+    covers:
+      tech: {}
+      elements: {Mathematics: 0.2, Critical Thinking: 0.1}
+
+  - id: sql-for-analysis
+    title: SQL for analysis (joins, aggregation, window functions)
+    kind: course
+    roles: [data analyst, machine learning engineer]
+    hours: 20
+    prereqs: []
+    resources:
+      - title: SQLBolt (interactive lessons)
+        url: https://sqlbolt.com/
+      - title: PostgreSQL tutorial (official docs)
+        url: https://www.postgresql.org/docs/current/tutorial.html
+    covers:
+      tech: {SQL: 0.6}
+      elements: {Programming: 0.05, Complex Problem Solving: 0.05}
+
+  - id: python-data-analysis
+    title: Data analysis with pandas, NumPy and Jupyter
+    kind: course
+    roles: [data analyst, machine learning engineer]
+    hours: 25
+    prereqs: [python-automation]
+    resources:
+      - title: pandas - Getting started (official)
+        url: https://pandas.pydata.org/docs/getting_started/index.html
+      - title: Python Data Science Handbook (free online)
+        url: https://jakevdp.github.io/PythonDataScienceHandbook/
+    covers:
+      tech: {pandas: 0.6, NumPy: 0.4, Jupyter Notebook: 0.6, Python: 0.1}
+      elements: {Programming: 0.1, Critical Thinking: 0.05}
+
+  - id: tableau-viz
+    title: Data visualization and dashboards with Tableau
+    kind: course
+    roles: [data analyst]
+    hours: 15
+    prereqs: [excel-analysis]
+    resources:
+      - title: Tableau free training videos
+        url: https://www.tableau.com/learn/training
+      - title: Tableau Public (free publishing)
+        url: https://public.tableau.com/
+    covers:
+      tech: {Tableau: 0.6}
+      elements: {Writing: 0.05, Judgment and Decision Making: 0.05}
+
+  - id: power-bi
+    title: Business intelligence with Power BI
+    kind: course
+    roles: [data analyst]
+    hours: 15
+    prereqs: [excel-analysis]
+    resources:
+      - title: Power BI documentation (Microsoft Learn)
+        url: https://learn.microsoft.com/en-us/power-bi/
+    covers:
+      tech: {Power BI: 0.6}
+      elements: {Judgment and Decision Making: 0.05}
+
+  - id: r-for-data
+    title: R for data science
+    kind: course
+    roles: [data analyst]
+    hours: 25
+    prereqs: [statistics-foundations]
+    resources:
+      - title: R for Data Science, 2nd edition (free online)
+        url: https://r4ds.hadley.nz/
+    covers:
+      tech: {R: 0.6}
+      elements: {Programming: 0.05, Mathematics: 0.05}
+
+  - id: math-for-ml
+    title: Mathematics for machine learning (linear algebra, calculus, probability)
+    kind: course
+    roles: [machine learning engineer]
+    hours: 35
+    prereqs: []
+    resources:
+      - title: Mathematics for Machine Learning (free book)
+        url: https://mml-book.github.io/
+      - title: Khan Academy - Linear algebra
+        url: https://www.khanacademy.org/math/linear-algebra
+    covers:
+      tech: {}
+      elements: {Mathematics: 0.25, Complex Problem Solving: 0.05}
+
+  - id: ml-foundations-sklearn
+    title: Machine learning foundations with scikit-learn
+    kind: course
+    roles: [machine learning engineer]
+    hours: 30
+    prereqs: [python-data-analysis, statistics-foundations, math-for-ml]
+    resources:
+      - title: Google Machine Learning Crash Course
+        url: https://developers.google.com/machine-learning/crash-course
+      - title: scikit-learn tutorials (official)
+        url: https://scikit-learn.org/stable/tutorial/index.html
+    covers:
+      tech: {Scikit-learn: 0.6}
+      elements: {Mathematics: 0.1, Systems Analysis: 0.05, Critical Thinking: 0.05}
+
+  - id: deep-learning-pytorch
+    title: Deep learning with PyTorch
+    kind: course
+    roles: [machine learning engineer]
+    hours: 40
+    prereqs: [ml-foundations-sklearn]
+    resources:
+      - title: PyTorch tutorials (official)
+        url: https://pytorch.org/tutorials/
+      - title: Dive into Deep Learning (free book)
+        url: https://d2l.ai/
+    covers:
+      tech: {PyTorch: 0.6}
+      elements: {Programming: 0.1, Mathematics: 0.05}
+
+  - id: tensorflow-keras
+    title: Deep learning with TensorFlow and Keras
+    kind: course
+    roles: [machine learning engineer]
+    hours: 20
+    prereqs: [ml-foundations-sklearn]
+    resources:
+      - title: TensorFlow tutorials (official)
+        url: https://www.tensorflow.org/tutorials
+    covers:
+      tech: {TensorFlow: 0.6}
+      elements: {Programming: 0.05}
+
+  - id: hf-transformers
+    title: NLP and LLMs with Hugging Face Transformers
+    kind: course
+    roles: [machine learning engineer]
+    hours: 20
+    prereqs: [deep-learning-pytorch]
+    resources:
+      - title: Hugging Face Learn (free courses)
+        url: https://huggingface.co/learn
+    covers:
+      tech: {Hugging Face Transformers: 0.6}
+      elements: {Systems Analysis: 0.05}
+
+  - id: mlops-mlflow
+    title: Experiment tracking and model registry with MLflow
+    kind: course
+    roles: [machine learning engineer]
+    hours: 10
+    prereqs: [ml-foundations-sklearn, git-version-control]
+    resources:
+      - title: MLflow documentation
+        url: https://mlflow.org/docs/latest/index.html
+    covers:
+      tech: {MLflow: 0.6}
+      elements: {Quality Control Analysis: 0.05}
+
+  - id: fastapi-serving
+    title: Serving models as APIs with FastAPI
+    kind: course
+    roles: [machine learning engineer]
+    hours: 10
+    prereqs: [python-automation]
+    resources:
+      - title: FastAPI tutorial (official)
+        url: https://fastapi.tiangolo.com/tutorial/
+    covers:
+      tech: {FastAPI: 0.6}
+      elements: {Programming: 0.05, Systems Analysis: 0.05}
+
+  # ---------------- data analyst projects ----------------
+  - id: proj-sales-analysis
+    title: "Project: Sales performance analysis with Excel and SQL"
+    kind: project
+    roles: [data analyst]
+    hours: 15
+    prereqs: [excel-analysis, sql-for-analysis]
+    resources: []
+    deliverables:
+      - Public retail dataset loaded into SQLite or PostgreSQL with a documented schema
+      - SQL queries for revenue by month, region and product, including window-function rankings
+      - Excel workbook with pivot tables and charts built from the query outputs
+      - One-page memo with three findings and the query behind each number
+    covers:
+      tech: {SQL: 0.2, Excel: 0.2}
+      elements: {Writing: 0.1, Critical Thinking: 0.05}
+
+  - id: proj-python-eda
+    title: "Project: Exploratory data analysis on an Indian open dataset"
+    kind: project
+    roles: [data analyst]
+    hours: 20
+    prereqs: [python-data-analysis, statistics-foundations, git-version-control]
+    resources: []
+    deliverables:
+      - Jupyter notebook that cleans a data.gov.in dataset (missing values, types, outliers)
+      - Descriptive statistics, distributions and at least one hypothesis test with interpretation
+      - Reproducible repo with requirements.txt and a README of the questions and answers
+    covers:
+      tech: {pandas: 0.2, Jupyter Notebook: 0.2, Python: 0.1, Git: 0.1}
+      elements: {Mathematics: 0.05, Critical Thinking: 0.05, Complex Problem Solving: 0.05}
+
+  - id: proj-bi-dashboard
+    title: "Project: Interactive KPI dashboard published online"
+    kind: project
+    roles: [data analyst]
+    hours: 20
+    prereqs: [tableau-viz, sql-for-analysis, proj-python-eda]
+    resources: []
+    deliverables:
+      - Tableau Public dashboard with filters, a KPI header and drill-down views
+      - Data source built from SQL with a documented refresh process
+      - Short walkthrough video or write-up aimed at a non-technical manager
+    covers:
+      tech: {Tableau: 0.2, SQL: 0.1}
+      elements: {Writing: 0.05, Judgment and Decision Making: 0.05}
+
+  # ---------------- machine learning engineer projects ----------------
+  - id: proj-tabular-ml
+    title: "Project: End-to-end tabular ML model with a model card"
+    kind: project
+    roles: [machine learning engineer]
+    hours: 25
+    prereqs: [ml-foundations-sklearn, sql-for-analysis, git-version-control]
+    resources: []
+    deliverables:
+      - scikit-learn Pipeline with preprocessing, cross-validation and a tuned baseline
+      - Data pulled with SQL; train/validation/test split documented to avoid leakage
+      - Model card covering metrics, error analysis and fairness slices
+    covers:
+      tech: {Scikit-learn: 0.2, SQL: 0.1, pandas: 0.1}
+      elements: {Systems Evaluation: 0.05, Critical Thinking: 0.05}
+
+  - id: proj-dl-finetune
+    title: "Project: Fine-tune a pretrained model with tracked experiments"
+    kind: project
+    roles: [machine learning engineer]
+    hours: 30
+    prereqs: [hf-transformers, mlops-mlflow]
+    resources: []
+    deliverables:
+      - Fine-tuned transformer (or CNN) on a small public dataset with a clear baseline
+      - Every run logged in MLflow - parameters, metrics, artifacts - and a comparison table
+      - Write-up of what improved the metric and what did not
+    covers:
+      tech: {PyTorch: 0.2, Hugging Face Transformers: 0.2, MLflow: 0.2}
+      elements: {Systems Evaluation: 0.05, Complex Problem Solving: 0.05}
+
+  - id: proj-ml-service
+    title: "Project: Containerized model-serving API with tests"
+    kind: project
+    roles: [machine learning engineer]
+    hours: 20
+    prereqs: [fastapi-serving, docker-containers, proj-tabular-ml]
+    resources: []
+    deliverables:
+      - FastAPI service exposing /predict and /health for the tabular model
+      - Dockerfile, pinned dependencies, and pytest suite run in CI
+      - Load test numbers (latency p50/p95) and a basic input-drift check
+    covers:
+      tech: {FastAPI: 0.2, Docker: 0.2, Linux: 0.1}
+      elements: {Quality Control Analysis: 0.05, Systems Analysis: 0.05}

@@ -1,0 +1,621 @@
+{
+  "schema_version": "1.0",
+  "student": {
+    "name": "Priya (sample)",
+    "branch": "B.Com",
+    "year": 3,
+    "hours_per_week": 8.0,
+    "target_role": "data analyst",
+    "tech_mastery": {
+      "Excel": 0.5
+    },
+    "max_weeks": null
+  },
+  "target_role": "data analyst",
+  "soc_alignment": [
+    {
+      "soc": "15-2051.01",
+      "title": "Business Intelligence Analysts",
+      "alpha": 0.45
+    },
+    {
+      "soc": "15-2051.00",
+      "title": "Data Scientists",
+      "alpha": 0.25
+    },
+    {
+      "soc": "13-1161.00",
+      "title": "Market Research Analysts and Marketing Specialists",
+      "alpha": 0.15
+    },
+    {
+      "soc": "15-2041.00",
+      "title": "Statisticians",
+      "alpha": 0.15
+    }
+  ],
+  "baseline_readiness": {
+    "core": {
+      "overall": 0.1901,
+      "tech": 0.0567,
+      "skills": 0.3901
+    },
+    "onet": {
+      "overall": 0.2597,
+      "skill": 0.4623,
+      "knowledge": 0.3423,
+      "ability": 0.2292,
+      "technology": 0.0356
+    }
+  },
+  "final_readiness": {
+    "core": {
+      "overall": 0.7141,
+      "tech": 0.7893,
+      "skills": 0.6014
+    },
+    "onet": {
+      "overall": 0.4551,
+      "skill": 0.5381,
+      "knowledge": 0.3889,
+      "ability": 0.2292,
+      "technology": 0.4959
+    }
+  },
+  "target_readiness": 0.8,
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Project: Sales performance analysis with Excel and SQL",
+      "milestone": "proj-sales-analysis",
+      "start_week": 1,
+      "end_week": 7,
+      "hours": 55.0,
+      "node_ids": [
+        "excel-analysis",
+        "sql-for-analysis",
+        "proj-sales-analysis"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.2977,
+          "tech": 0.2039,
+          "skills": 0.4384
+        },
+        "onet": {
+          "overall": 0.3001,
+          "skill": 0.4787,
+          "knowledge": 0.3549,
+          "ability": 0.2292,
+          "technology": 0.128
+        }
+      }
+    },
+    {
+      "phase": 2,
+      "title": "Project: Exploratory data analysis on an Indian open dataset",
+      "milestone": "proj-python-eda",
+      "start_week": 7,
+      "end_week": 21,
+      "hours": 112.0,
+      "node_ids": [
+        "git-version-control",
+        "python-automation",
+        "python-data-analysis",
+        "statistics-foundations",
+        "proj-python-eda"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.5547,
+          "tech": 0.5533,
+          "skills": 0.5567
+        },
+        "onet": {
+          "overall": 0.3964,
+          "skill": 0.5199,
+          "knowledge": 0.3832,
+          "ability": 0.2292,
+          "technology": 0.3477
+        }
+      }
+    },
+    {
+      "phase": 3,
+      "title": "Project: Interactive KPI dashboard published online",
+      "milestone": "proj-bi-dashboard",
+      "start_week": 21,
+      "end_week": 26,
+      "hours": 35.0,
+      "node_ids": [
+        "tableau-viz",
+        "proj-bi-dashboard"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.6254,
+          "tech": 0.6551,
+          "skills": 0.5809
+        },
+        "onet": {
+          "overall": 0.4222,
+          "skill": 0.5313,
+          "knowledge": 0.3832,
+          "ability": 0.2292,
+          "technology": 0.4116
+        }
+      }
+    },
+    {
+      "phase": 4,
+      "title": "Electives",
+      "milestone": null,
+      "start_week": 26,
+      "end_week": 31,
+      "hours": 40.0,
+      "node_ids": [
+        "power-bi",
+        "r-for-data"
+      ],
+      "readiness_after": {
+        "core": {
+          "overall": 0.7141,
+          "tech": 0.7893,
+          "skills": 0.6014
+        },
+        "onet": {
+          "overall": 0.4551,
+          "skill": 0.5381,
+          "knowledge": 0.3889,
+          "ability": 0.2292,
+          "technology": 0.4959
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "excel-analysis",
+      "label": "Excel for data analysis (formulas, pivot tables, charts)",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 1,
+      "end_week": 3,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "Microsoft Excel help and learning",
+          "url": "https://support.microsoft.com/en-us/excel"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Excel",
+        "Computers and Electronics",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": "sql-for-analysis",
+      "label": "SQL for analysis (joins, aggregation, window functions)",
+      "kind": "course",
+      "phase": 1,
+      "start_week": 3,
+      "end_week": 5,
+      "hours": 20.0,
+      "resources": [
+        {
+          "title": "SQLBolt (interactive lessons)",
+          "url": "https://sqlbolt.com/"
+        },
+        {
+          "title": "PostgreSQL tutorial (official docs)",
+          "url": "https://www.postgresql.org/docs/current/tutorial.html"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "SQL",
+        "Complex Problem Solving",
+        "Programming"
+      ]
+    },
+    {
+      "id": "proj-sales-analysis",
+      "label": "Project: Sales performance analysis with Excel and SQL",
+      "kind": "project",
+      "phase": 1,
+      "start_week": 6,
+      "end_week": 7,
+      "hours": 15.0,
+      "resources": [],
+      "deliverables": [
+        "Public retail dataset loaded into SQLite or PostgreSQL with a documented schema",
+        "SQL queries for revenue by month, region and product, including window-function rankings",
+        "Excel workbook with pivot tables and charts built from the query outputs",
+        "One-page memo with three findings and the query behind each number"
+      ],
+      "skills_gained": [
+        "Excel",
+        "SQL",
+        "Critical Thinking",
+        "Writing"
+      ]
+    },
+    {
+      "id": "git-version-control",
+      "label": "Git and collaborative version control",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 7,
+      "end_week": 9,
+      "hours": 12.0,
+      "resources": [
+        {
+          "title": "Pro Git (free book)",
+          "url": "https://git-scm.com/book/en/v2"
+        },
+        {
+          "title": "Learn Git Branching (interactive)",
+          "url": "https://learngitbranching.js.org/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Git",
+        "Quality Control Analysis"
+      ]
+    },
+    {
+      "id": "python-automation",
+      "label": "Python for automation",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 9,
+      "end_week": 13,
+      "hours": 30.0,
+      "resources": [
+        {
+          "title": "The Python Tutorial (official)",
+          "url": "https://docs.python.org/3/tutorial/"
+        },
+        {
+          "title": "Automate the Boring Stuff with Python (free online)",
+          "url": "https://automatetheboringstuff.com/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Python",
+        "Complex Problem Solving",
+        "Programming"
+      ]
+    },
+    {
+      "id": "python-data-analysis",
+      "label": "Data analysis with pandas, NumPy and Jupyter",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 13,
+      "end_week": 16,
+      "hours": 25.0,
+      "resources": [
+        {
+          "title": "pandas - Getting started (official)",
+          "url": "https://pandas.pydata.org/docs/getting_started/index.html"
+        },
+        {
+          "title": "Python Data Science Handbook (free online)",
+          "url": "https://jakevdp.github.io/PythonDataScienceHandbook/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Jupyter Notebook",
+        "NumPy",
+        "Python",
+        "pandas",
+        "Critical Thinking",
+        "Programming"
+      ]
+    },
+    {
+      "id": "statistics-foundations",
+      "label": "Statistics and probability foundations",
+      "kind": "course",
+      "phase": 2,
+      "start_week": 16,
+      "end_week": 19,
+      "hours": 25.0,
+      "resources": [
+        {
+          "title": "Khan Academy - Statistics and probability",
+          "url": "https://www.khanacademy.org/math/statistics-probability"
+        },
+        {
+          "title": "OpenIntro Statistics (free textbook)",
+          "url": "https://www.openintro.org/book/os/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Critical Thinking",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": "proj-python-eda",
+      "label": "Project: Exploratory data analysis on an Indian open dataset",
+      "kind": "project",
+      "phase": 2,
+      "start_week": 19,
+      "end_week": 21,
+      "hours": 20.0,
+      "resources": [],
+      "deliverables": [
+        "Jupyter notebook that cleans a data.gov.in dataset (missing values, types, outliers)",
+        "Descriptive statistics, distributions and at least one hypothesis test with interpretation",
+        "Reproducible repo with requirements.txt and a README of the questions and answers"
+      ],
+      "skills_gained": [
+        "Git",
+        "Jupyter Notebook",
+        "Python",
+        "pandas",
+        "Complex Problem Solving",
+        "Critical Thinking",
+        "Mathematics"
+      ]
+    },
+    {
+      "id": "tableau-viz",
+      "label": "Data visualization and dashboards with Tableau",
+      "kind": "course",
+      "phase": 3,
+      "start_week": 21,
+      "end_week": 23,
+      "hours": 15.0,
+      "resources": [
+        {
+          "title": "Tableau free training videos",
+          "url": "https://www.tableau.com/learn/training"
+        },
+        {
+          "title": "Tableau Public (free publishing)",
+          "url": "https://public.tableau.com/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Tableau",
+        "Judgment and Decision Making",
+        "Writing"
+      ]
+    },
+    {
+      "id": "proj-bi-dashboard",
+      "label": "Project: Interactive KPI dashboard published online",
+      "kind": "project",
+      "phase": 3,
+      "start_week": 23,
+      "end_week": 26,
+      "hours": 20.0,
+      "resources": [],
+      "deliverables": [
+        "Tableau Public dashboard with filters, a KPI header and drill-down views",
+        "Data source built from SQL with a documented refresh process",
+        "Short walkthrough video or write-up aimed at a non-technical manager"
+      ],
+      "skills_gained": [
+        "SQL",
+        "Tableau",
+        "Judgment and Decision Making",
+        "Writing"
+      ]
+    },
+    {
+      "id": "power-bi",
+      "label": "Business intelligence with Power BI",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 26,
+      "end_week": 28,
+      "hours": 15.0,
+      "resources": [
+        {
+          "title": "Power BI documentation (Microsoft Learn)",
+          "url": "https://learn.microsoft.com/en-us/power-bi/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "Power BI",
+        "Judgment and Decision Making"
+      ]
+    },
+    {
+      "id": "r-for-data",
+      "label": "R for data science",
+      "kind": "course",
+      "phase": 4,
+      "start_week": 28,
+      "end_week": 31,
+      "hours": 25.0,
+      "resources": [
+        {
+          "title": "R for Data Science, 2nd edition (free online)",
+          "url": "https://r4ds.hadley.nz/"
+        }
+      ],
+      "deliverables": [],
+      "skills_gained": [
+        "R",
+        "Mathematics",
+        "Programming"
+      ]
+    },
+    {
+      "id": "goal:data-analyst",
+      "label": "Data Analyst",
+      "kind": "goal",
+      "phase": null,
+      "start_week": null,
+      "end_week": null,
+      "hours": 0.0,
+      "resources": [],
+      "deliverables": [],
+      "skills_gained": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "excel-analysis->power-bi",
+      "source": "excel-analysis",
+      "target": "power-bi",
+      "kind": "prereq"
+    },
+    {
+      "id": "tableau-viz->proj-bi-dashboard",
+      "source": "tableau-viz",
+      "target": "proj-bi-dashboard",
+      "kind": "prereq"
+    },
+    {
+      "id": "sql-for-analysis->proj-bi-dashboard",
+      "source": "sql-for-analysis",
+      "target": "proj-bi-dashboard",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-python-eda->proj-bi-dashboard",
+      "source": "proj-python-eda",
+      "target": "proj-bi-dashboard",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-data-analysis->proj-python-eda",
+      "source": "python-data-analysis",
+      "target": "proj-python-eda",
+      "kind": "prereq"
+    },
+    {
+      "id": "statistics-foundations->proj-python-eda",
+      "source": "statistics-foundations",
+      "target": "proj-python-eda",
+      "kind": "prereq"
+    },
+    {
+      "id": "git-version-control->proj-python-eda",
+      "source": "git-version-control",
+      "target": "proj-python-eda",
+      "kind": "prereq"
+    },
+    {
+      "id": "excel-analysis->proj-sales-analysis",
+      "source": "excel-analysis",
+      "target": "proj-sales-analysis",
+      "kind": "prereq"
+    },
+    {
+      "id": "sql-for-analysis->proj-sales-analysis",
+      "source": "sql-for-analysis",
+      "target": "proj-sales-analysis",
+      "kind": "prereq"
+    },
+    {
+      "id": "python-automation->python-data-analysis",
+      "source": "python-automation",
+      "target": "python-data-analysis",
+      "kind": "prereq"
+    },
+    {
+      "id": "statistics-foundations->r-for-data",
+      "source": "statistics-foundations",
+      "target": "r-for-data",
+      "kind": "prereq"
+    },
+    {
+      "id": "excel-analysis->tableau-viz",
+      "source": "excel-analysis",
+      "target": "tableau-viz",
+      "kind": "prereq"
+    },
+    {
+      "id": "proj-sales-analysis->goal:data-analyst",
+      "source": "proj-sales-analysis",
+      "target": "goal:data-analyst",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-python-eda->goal:data-analyst",
+      "source": "proj-python-eda",
+      "target": "goal:data-analyst",
+      "kind": "milestone"
+    },
+    {
+      "id": "proj-bi-dashboard->goal:data-analyst",
+      "source": "proj-bi-dashboard",
+      "target": "goal:data-analyst",
+      "kind": "milestone"
+    }
+  ],
+  "top_tech_gaps": [
+    {
+      "tech": "R",
+      "gap": 0.071
+    },
+    {
+      "tech": "SQL",
+      "gap": 0.071
+    },
+    {
+      "tech": "Tableau",
+      "gap": 0.071
+    },
+    {
+      "tech": "Python",
+      "gap": 0.0702
+    },
+    {
+      "tech": "Power BI",
+      "gap": 0.0694
+    },
+    {
+      "tech": "Git",
+      "gap": 0.069
+    },
+    {
+      "tech": "Jupyter Notebook",
+      "gap": 0.0677
+    },
+    {
+      "tech": "pandas",
+      "gap": 0.0673
+    },
+    {
+      "tech": "Excel",
+      "gap": 0.0356
+    },
+    {
+      "tech": "Microsoft PowerPoint",
+      "gap": 0.0044
+    }
+  ],
+  "skipped_known": [],
+  "dropped_for_time": [],
+  "unmatched_tech": [],
+  "feasibility": {
+    "feasible": true,
+    "total_hours": 242.0,
+    "total_weeks": 31,
+    "hours_per_week": 8.0,
+    "max_weeks": null,
+    "fix": null
+  },
+  "explanation": null,
+  "provenance": {
+    "generator": "deterministic-planner",
+    "data": "O*NET 31.0 Database (onetcenter.org), CC BY 4.0",
+    "editorial_constants_human_reviewed": false
+  }
+}

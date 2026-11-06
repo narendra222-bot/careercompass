@@ -197,7 +197,11 @@ class Planner:
     def _known(self, item: CatalogItem, st: _State) -> bool:
         if item.kind != "course" or not item.covers.tech:
             return False
-        keys = [self._tech_key(t) for t in item.covers.tech]
+        # Judge only the technologies this role cares about (e.g. Bash is taught in the
+        # Linux course but is not on the ML engineer list, so it must not block a skip).
+        curated_low = {c.lower() for c in self.curated}
+        techs = [t for t in item.covers.tech if t.lower() in curated_low] or list(item.covers.tech)
+        keys = [self._tech_key(t) for t in techs]
         return all(k is not None and st.mastery.get(k, 0.0) >= SKIP_MASTERY for k in keys)
 
     def plan(self, student: StudentProfile) -> dict[str, Any]:
@@ -288,10 +292,18 @@ class Planner:
         self, selected: set[str], projects: list[str], st0: _State, hpw: float
     ) -> list[dict[str, Any]]:
         order = catalog_mod.topo_order(self.cat, selected)
-        ordered_projects = [i for i in order if i in projects]
         groups: list[list[str]] = []
         scheduled: set[str] = set()
-        for p in ordered_projects:
+        remaining = [i for i in order if i in projects]
+        while remaining:
+            # Next milestone = the project reachable with the fewest extra hours, so
+            # students ship an easier project before a long, hard one (ties: id).
+            def extra_hours(pid: str, done: frozenset[str] = frozenset(scheduled)) -> float:
+                need = (catalog_mod.prerequisite_closure(self.cat, {pid}) & selected) - done
+                return sum(self.items[i].hours for i in need)
+
+            p = min(remaining, key=lambda pid: (extra_hours(pid), pid))
+            remaining.remove(p)
             need = catalog_mod.prerequisite_closure(self.cat, {p}) & selected
             group = [i for i in order if i in need and i not in scheduled]
             scheduled |= set(group)

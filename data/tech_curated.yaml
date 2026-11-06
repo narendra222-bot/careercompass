@@ -21,3 +21,34 @@ devops engineer:
     - Python
     - Helm             # not in O*NET 31.0
     - Argo CD          # not in O*NET 31.0
+
+data analyst:
+  human_reviewed: false
+  technologies:
+    - Excel
+    - SQL
+    - Python
+    - pandas
+    - Jupyter Notebook
+    - Tableau
+    - Power BI
+    - R
+    - Git
+
+machine learning engineer:
+  human_reviewed: false
+  technologies:
+    - Python
+    - NumPy
+    - pandas
+    - Jupyter Notebook
+    - SQL
+    - Git
+    - Scikit-learn
+    - PyTorch
+    - TensorFlow
+    - Hugging Face Transformers   # not in O*NET 31.0
+    - MLflow
+    - Docker
+    - FastAPI                     # not in O*NET 31.0
+    - Linux

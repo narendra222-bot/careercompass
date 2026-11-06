@@ -26,17 +26,32 @@ def main() -> None:
     schema_path = docs / "roadmap.schema.json"
     schema_path.write_text(json.dumps(Roadmap.model_json_schema(), indent=2) + "\n")
 
-    student = StudentProfile(
-        name="Ravi (sample)",
-        branch="CSE",
-        year=3,
-        hours_per_week=10,
-        target_role="devops engineer",
-        tech_mastery={"Linux": 0.7, "Bash": 0.6, "Git": 0.7, "Python": 0.5},
-    )
-    sample_path = docs / "samples" / "roadmap1_devops.json"
-    sample_path.write_text(generate_roadmap(student).model_dump_json(indent=2) + "\n")
-    print(f"wrote {schema_path.relative_to(ROOT)} and {sample_path.relative_to(ROOT)}")
+    samples = {
+        "roadmap1_devops.json": StudentProfile(
+            "Ravi (sample)",
+            "CSE",
+            3,
+            10,
+            "devops engineer",
+            {"Linux": 0.7, "Bash": 0.6, "Git": 0.7, "Python": 0.5},
+        ),
+        "roadmap2_data_analyst.json": StudentProfile(
+            "Priya (sample)", "B.Com", 3, 8, "data analyst", {"Excel": 0.5}
+        ),
+        "roadmap3_ml_engineer.json": StudentProfile(
+            "Arjun (sample)",
+            "CSE",
+            4,
+            12,
+            "machine learning engineer",
+            {"Python": 0.6, "Git": 0.6, "SQL": 0.4, "Linux": 0.6},
+        ),
+    }
+    for fname, student in samples.items():
+        out = docs / "samples" / fname
+        out.write_text(generate_roadmap(student).model_dump_json(indent=2) + "\n")
+        print(f"wrote {out.relative_to(ROOT)}")
+    print(f"wrote {schema_path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

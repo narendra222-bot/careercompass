@@ -115,3 +115,56 @@ def test_infeasible_deadline_reports_fix(con: Any) -> None:
 def test_zero_hours_rejected(con: Any) -> None:
     with pytest.raises(ValueError):
         build_plan(_student(hours_per_week=0), con)
+
+
+SAMPLES = [
+    ("devops engineer", "CSE", 3, {"Linux": 0.7, "Bash": 0.6, "git": 0.7, "Python": 0.5}),
+    ("data analyst", "B.Com", 3, {"Excel": 0.5}),
+    ("machine learning engineer", "CSE", 4, {"Python": 0.6, "git": 0.6, "SQL": 0.4, "Linux": 0.6}),
+]
+
+
+@pytest.mark.parametrize(("role", "branch", "year", "mastery"), SAMPLES)
+def test_three_sample_roadmaps_are_valid(
+    con: Any, role: str, branch: str, year: int, mastery: dict[str, float]
+) -> None:
+    from careercompass import catalog, schemas
+    from careercompass.planner import generate_roadmap
+
+    st = _student(target_role=role, branch=branch, year=year, tech_mastery=mastery)
+    r = generate_roadmap(st, con)
+    assert schemas.verify(r, catalog.load()) == []
+    assert r.unmatched_tech == []
+    assert r.final_readiness.core.overall > r.baseline_readiness.core.overall + 0.3
+    # first milestone is the project reachable with the fewest total hours from scratch
+    cat = catalog.load()
+    planned = {n.id for n in r.nodes if n.kind in ("course", "project")}
+
+    def from_scratch(pid: str) -> float:
+        need = catalog.prerequisite_closure(cat, {pid}) & planned
+        return sum(cat.by_id()[i].hours for i in need)
+
+    milestones = [p.milestone for p in r.phases if p.milestone]
+    assert from_scratch(milestones[0]) == min(from_scratch(m) for m in milestones)
+
+
+def test_ml_skips_linux_when_known_even_without_bash(con: Any) -> None:
+    st = _student(
+        target_role="machine learning engineer", tech_mastery={"Linux": 0.6, "Python": 0.6}
+    )
+    plan = build_plan(st, con)
+    assert "linux-fundamentals" in plan["skipped_known"]
+
+
+def test_ml_ships_tabular_project_before_finetune(con: Any) -> None:
+    plan = build_plan(_student(target_role="machine learning engineer", tech_mastery={}), con)
+    ms = [ph["milestone"] for ph in plan["phases"] if ph["milestone"]]
+    assert ms.index("proj-tabular-ml") < ms.index("proj-dl-finetune")
+
+
+def test_bcom_starts_lower_than_cse_for_data_analyst(con: Any) -> None:
+    bcom = build_plan(_student(target_role="data analyst", branch="B.Com", tech_mastery={}), con)
+    cse = build_plan(_student(target_role="data analyst", branch="CSE", tech_mastery={}), con)
+    b, c = bcom["baseline_readiness"]["core"], cse["baseline_readiness"]["core"]
+    print(f"\nDA baseline core: B.Com {b['overall']:.3f} vs CSE {c['overall']:.3f}")
+    assert b["skills"] < c["skills"]

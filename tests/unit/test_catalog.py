@@ -64,34 +64,48 @@ def test_real_catalog_loads_and_is_dag() -> None:
     assert catalog.prerequisite_closure(cat, ids) == ids
 
 
-def test_covered_tech_names_are_curated() -> None:
+ROLES = ["devops engineer", "data analyst", "machine learning engineer"]
+
+
+def test_covered_tech_names_are_curated_somewhere() -> None:
+    """Catches typos: every taught tech must be on some role's curated list."""
     cat = catalog.load()
-    curated = {t.lower() for t in tech_catalog.load_curated("devops engineer")}
-    unknown = sorted(
-        {
-            t
-            for it in cat.for_role("devops engineer")
-            for t in it.covers.tech
-            if t.lower() not in curated
-        }
+    curated = {t.lower() for r in ROLES for t in tech_catalog.load_curated(r)}
+    unknown = sorted({t for it in cat.items for t in it.covers.tech if t.lower() not in curated})
+    assert not unknown, f"catalog tech not on any curated list: {unknown}"
+
+
+@pytest.mark.parametrize("role", ROLES)
+def test_every_curated_tech_is_taught(role: str) -> None:
+    cat = catalog.load()
+    taught = {t.lower() for it in cat.for_role(role) for t in it.covers.tech}
+    missing = [t for t in tech_catalog.load_curated(role) if t.lower() not in taught]
+    assert not missing, f"{role}: curated tech with no catalog item: {missing}"
+
+
+@pytest.mark.parametrize("role", ROLES)
+def test_role_catalog_is_closed_and_has_projects(role: str) -> None:
+    cat = catalog.load()
+    items = cat.for_role(role)
+    ids = {i.id for i in items}
+    assert catalog.prerequisite_closure(cat, ids) == ids, f"{role}: prereq serves another role"
+    projects = [i for i in items if i.kind == "project"]
+    assert len(projects) >= 3
+    print(
+        f"\n{role}: {len(items) - len(projects)} courses, {len(projects)} projects, "
+        f"{sum(i.hours for i in items):.0f} h"
     )
-    assert not unknown, f"catalog tech not in curated devops list: {unknown}"
-
-
-def test_every_curated_devops_tech_is_taught() -> None:
-    cat = catalog.load()
-    taught = {t.lower() for it in cat.for_role("devops engineer") for t in it.covers.tech}
-    missing = [t for t in tech_catalog.load_curated("devops engineer") if t.lower() not in taught]
-    assert not missing, f"curated tech with no catalog item: {missing}"
 
 
 @pytest.mark.needs_data
-def test_covered_element_names_exist_in_onet() -> None:
+@pytest.mark.parametrize("role", ROLES)
+def test_covered_element_names_exist_in_role_blend(role: str) -> None:
     from careercompass import db
+    from careercompass.planner import load_role_profile
 
     con = db.connect()
-    names = {r["element_name"] for s in ALPHAS for r in db.get_requirements(con, s)}
+    socs = [s["soc"] for s in load_role_profile(role)["socs"]]
+    names = {r["element_name"] for s in socs for r in db.get_requirements(con, s)}
     cat = catalog.load()
-    unknown = sorted({e for it in cat.items for e in it.covers.elements} - names)
-    print(f"\nunknown element names: {unknown}")
-    assert not unknown, f"catalog element names not in O*NET: {unknown}"
+    unknown = sorted({e for it in cat.for_role(role) for e in it.covers.elements} - names)
+    assert not unknown, f"{role}: catalog element names not in O*NET blend: {unknown}"

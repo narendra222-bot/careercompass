@@ -45,6 +45,9 @@ TECH_ALIASES: dict[str, tuple[str, ...]] = {
     "aws": ("Amazon Web Services AWS software",),
     "terraform": ("IBM Terraform",),
     "jenkins": ("Jenkins CI",),
+    "sql": ("Structured query language SQL",),
+    "excel": ("Microsoft Excel",),
+    "power bi": ("Microsoft Power BI",),
 }
 
 
