@@ -5,7 +5,16 @@ import { useRouter } from "next/navigation";
 import { streamChat, type ChatPayload } from "@/lib/api";
 import { useHydrated } from "@/lib/hooks";
 import { roadmapKey } from "@/lib/roadmap";
-import { clearUser, getUser, loadConversations, newId, saveConversations, takeDraft } from "@/lib/store";
+import { chats, SessionExpired } from "@/lib/server";
+import {
+  clearUser,
+  getUser,
+  loadConversations,
+  newId,
+  saveConversations,
+  takeDraft,
+  takeLegacyConversations,
+} from "@/lib/store";
 import type { AssistantMessage as AMsg, Conversation, Message, Roadmap, User } from "@/lib/types";
 import { AssistantMessage } from "./AssistantMessage";
 import { Composer } from "./Composer";
@@ -85,9 +94,15 @@ export function ChatApp() {
 
 function Chat() {
   const router = useRouter();
-  const [user] = useState<User | null>(getUser);
+  const [user] = useState<User | null>(() => {
+    const u = getUser();
+    return u?.token ? u : null; // users from before sign-in existed must sign in again
+  });
   const ready = !!user;
-  const [convs, setConvs] = useState<Conversation[]>(loadConversations);
+  const [convs, setConvs] = useState<Conversation[]>(() => (user ? loadConversations(user) : []));
+  const [synced, setSynced] = useState(false);
+  const savedAt = useRef<Record<string, number>>({});
+  const warned = useRef(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [panel, setPanel] = useState(false);
@@ -117,9 +132,66 @@ function Chat() {
     };
   }, [router, user]);
 
+  const expire = useCallback(
+    (message: string) => {
+      clearUser();
+      toast(message);
+      router.replace("/login");
+    },
+    [router],
+  );
+
+  // load the account's chats, merge with this device's copy (newest wins), hand over old ones
   useEffect(() => {
-    if (ready) saveConversations(convs);
-  }, [convs, ready]);
+    if (!user?.token) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const remote = await chats.list(user.token!);
+        if (cancelled) return;
+        const byId = new Map<string, Conversation>();
+        for (const c of [...convsRef.current, ...takeLegacyConversations()]) byId.set(c.id, c);
+        for (const c of remote) {
+          const local = byId.get(c.id);
+          if (!local || c.updatedAt >= local.updatedAt) byId.set(c.id, c);
+          savedAt.current[c.id] = c.updatedAt;
+        }
+        setConvs([...byId.values()].sort((a, b) => b.updatedAt - a.updatedAt));
+        setSynced(true);
+      } catch (e) {
+        if (e instanceof SessionExpired) expire(e.message);
+        else toast("Couldn't load your saved chats. Showing the copy on this device.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, expire]);
+
+  // keep a local copy always; save finished chats to the account shortly after they change
+  useEffect(() => {
+    if (!user) return;
+    saveConversations(user, convs);
+    if (!synced || !user.token) return;
+    const t = setTimeout(async () => {
+      for (const c of convsRef.current) {
+        if ((savedAt.current[c.id] ?? 0) >= c.updatedAt) continue;
+        if (c.messages.some((m) => m.role === "assistant" && m.status === "streaming")) continue;
+        try {
+          await chats.save(user.token!, c);
+          savedAt.current[c.id] = c.updatedAt;
+        } catch (e) {
+          if (e instanceof SessionExpired) return expire(e.message);
+          if (!warned.current) {
+            warned.current = true;
+            toast("Couldn't save to your account right now. Your chats are kept on this device.");
+          }
+          return;
+        }
+      }
+    }, 800);
+    return () => clearTimeout(t);
+  }, [convs, synced, user, expire]);
 
   // ---------- updates ----------
   const updateConv = useCallback((cid: string, fn: (c: Conversation) => Conversation) => {
@@ -291,6 +363,8 @@ function Chat() {
       return;
     }
     setConvs((cs) => cs.filter((c) => c.id !== id));
+    delete savedAt.current[id];
+    if (user?.token) chats.remove(user.token, id).catch((e) => e instanceof SessionExpired && expire(e.message));
     if (id === activeId) newChat();
     toast("Chat deleted");
   };

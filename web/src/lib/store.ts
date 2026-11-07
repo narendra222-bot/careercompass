@@ -1,5 +1,6 @@
-// Browser persistence for the signed-in user and their conversations.
-// Everything lives in localStorage for now; a server-side store can replace this later.
+// Browser persistence: the signed-in user (with their session token) and a local copy of
+// their conversations. The server is the source of truth; this copy makes the app open
+// instantly and keeps chats if the server can't be reached.
 import type { Conversation, User } from "./types";
 
 const USER_KEY = "cc.user";
@@ -31,8 +32,18 @@ export const clearUser = () => {
   } catch {}
 };
 
-export const loadConversations = () => read<Conversation[]>(CONVS_KEY, []);
-export const saveConversations = (cs: Conversation[]) => write(CONVS_KEY, cs);
+const convKey = (u: User) => `${CONVS_KEY}.${u.id ?? u.email}`;
+export const loadConversations = (u: User) => read<Conversation[]>(convKey(u), []);
+export const saveConversations = (u: User, cs: Conversation[]) => write(convKey(u), cs);
+
+/** Chats saved before accounts existed (one shared list); handed over once, then removed. */
+export const takeLegacyConversations = (): Conversation[] => {
+  const cs = read<Conversation[]>(CONVS_KEY, []);
+  try {
+    localStorage.removeItem(CONVS_KEY);
+  } catch {}
+  return cs;
+};
 
 // Text typed on the landing page before signing in, sent as the first message.
 export const setDraft = (t: string) => {

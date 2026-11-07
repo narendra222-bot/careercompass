@@ -21,3 +21,6 @@ data/onet.duckdb
 
 # LLM response cache
 data/llm_cache/
+
+# App database (accounts and saved chats)
+data/app.db

@@ -8,6 +8,8 @@ Endpoints
   GET  /api/roles     roles the planner supports (for a dropdown)
   POST /api/roadmap   free text (+ answers to earlier questions) -> roadmap or questions
   POST /api/chat      a conversation -> streamed thinking steps, reply text and roadmap (SSE)
+  GET  /api/auth/config, POST /api/auth/google | /api/auth/email, GET /api/me
+  GET  /api/conversations, PUT|DELETE /api/conversations/{id}   (signed-in user's chats)
 """
 
 from __future__ import annotations
@@ -15,14 +17,14 @@ from __future__ import annotations
 import os
 import threading
 from collections.abc import Iterator
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from careercompass import catalog, chat, intake
+from careercompass import accounts, catalog, chat, intake
 from careercompass.graph import build_graph
 from careercompass.llm import get_llm
 from careercompass.planner import load_role_profile
@@ -35,7 +37,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:3000").split(","),
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
 
@@ -158,3 +160,104 @@ def roadmap(req: RoadmapRequest) -> RoadmapResponse:
         intake_source=s.get("intake_source"),
         explanation_source=s.get("explanation_source"),
     )
+
+
+# ---------------- accounts and saved chats ----------------
+
+
+def _accounts() -> Any:
+    if "accounts" not in _state:
+        _state["accounts"] = accounts.connect()
+    return _state["accounts"]
+
+
+def current_user(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Sign in first")
+    try:
+        uid = accounts.read_token(authorization[7:])
+    except accounts.AuthError as exc:
+        raise HTTPException(status_code=401, detail=str(exc)) from exc
+    user = accounts.get_user(_accounts(), uid)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Account not found")
+    return user
+
+
+CurrentUser = Annotated[dict[str, Any], Depends(current_user)]
+
+
+class GoogleLogin(BaseModel):
+    credential: str = Field(min_length=20, max_length=5000)
+
+
+class EmailLogin(BaseModel):
+    name: str = Field(min_length=1, max_length=60)
+    email: str = Field(min_length=3, max_length=120)
+
+
+def _session(user: dict[str, Any]) -> dict[str, Any]:
+    return {"token": accounts.issue_token(user["id"]), "user": user}
+
+
+@app.get("/api/auth/config")
+def auth_config() -> dict[str, Any]:
+    return {
+        "google_client_id": accounts.google_client_id(),
+        "email_login": accounts.email_login_allowed(),
+    }
+
+
+@app.post("/api/auth/google")
+def login_google(body: GoogleLogin) -> dict[str, Any]:
+    try:
+        claims = accounts.verify_google(body.credential)
+    except accounts.AuthError as exc:
+        raise HTTPException(status_code=401, detail=str(exc)) from exc
+    user = accounts.upsert_user(
+        _accounts(),
+        claims["email"],
+        claims.get("name") or claims["email"].split("@")[0],
+        "google",
+        claims.get("picture"),
+    )
+    return _session(user)
+
+
+@app.post("/api/auth/email")
+def login_email(body: EmailLogin) -> dict[str, Any]:
+    if not accounts.email_login_allowed():
+        raise HTTPException(status_code=403, detail="Email sign-in is turned off; use Google")
+    try:
+        email = accounts.check_email(body.email)
+    except accounts.AuthError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return _session(accounts.upsert_user(_accounts(), email, body.name, "email"))
+
+
+@app.get("/api/me")
+def me(user: CurrentUser) -> dict[str, Any]:
+    return user
+
+
+@app.get("/api/conversations")
+def conversations(user: CurrentUser) -> list[dict[str, Any]]:
+    return accounts.list_conversations(_accounts(), user["id"])
+
+
+@app.put("/api/conversations/{cid}")
+def put_conversation(cid: str, conv: dict[str, Any], user: CurrentUser) -> dict[str, str]:
+    if str(conv.get("id")) != cid:
+        raise HTTPException(status_code=422, detail="id in the URL and body differ")
+    try:
+        accounts.save_conversation(_accounts(), user["id"], conv)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return {"status": "saved"}
+
+
+@app.delete("/api/conversations/{cid}")
+def delete_conversation(cid: str, user: CurrentUser) -> dict[str, str]:
+    if not accounts.delete_conversation(_accounts(), user["id"], cid):
+        raise HTTPException(status_code=404, detail="No such conversation")
+    return {"status": "deleted"}

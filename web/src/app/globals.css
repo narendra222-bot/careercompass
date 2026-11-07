@@ -330,3 +330,5 @@ footer{padding:48px 0 40px;color:var(--muted);font-size:13.5px;display:flex;gap:
 .src svg{width:15px;height:15px;margin-top:2px;color:var(--accent-ink);flex:none}
 .src b{color:var(--fg);font-weight:500}
 .busy{font-family:var(--sans);font-size:13px;color:var(--muted);border-left:2px solid var(--accent);padding:2px 0 2px 10px;margin:8px 0 4px}
+.gbox{display:flex;justify-content:center;min-height:44px}
+.btn:disabled{opacity:.6;cursor:default}

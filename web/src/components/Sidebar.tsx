@@ -89,7 +89,12 @@ export function Sidebar({ user, conversations, activeId, onNew, onOpen, onDelete
           </div>
         )}
         <button onClick={() => setMenu(!menu)} aria-expanded={menu}>
-          <span className="av">{user.name.trim().charAt(0).toUpperCase() || "?"}</span>
+          {user.picture ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="av" src={user.picture} alt="" referrerPolicy="no-referrer" />
+          ) : (
+            <span className="av">{user.name.trim().charAt(0).toUpperCase() || "?"}</span>
+          )}
           <span className="uname">
             {user.name}
             <small>Free plan</small>

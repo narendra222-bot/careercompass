@@ -11,7 +11,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
-  const signedIn = useBrowserValue(() => !!getUser(), false);
+  const signedIn = useBrowserValue(() => !!getUser()?.token, false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", on, { passive: true });
@@ -56,7 +56,7 @@ export function HeroForm() {
   const go = () => {
     const t = text.trim();
     if (t) setDraft(t.slice(0, 2000));
-    router.push(getUser() ? "/chat" : "/login");
+    router.push(getUser()?.token ? "/chat" : "/login");
   };
   return (
     <form

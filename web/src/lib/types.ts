@@ -82,7 +82,14 @@ export type Conversation = {
   done: string[]; // roadmap node ids the student has ticked
 };
 
-export type User = { name: string; email: string };
+export type User = {
+  id?: string;
+  name: string;
+  email: string;
+  picture?: string | null;
+  provider?: "google" | "email";
+  token?: string; // session token from the API; absent for users from before sign-in existed
+};
 
 export type DoneEvent = {
   status: "ok" | "needs_input" | "chat" | "error";
