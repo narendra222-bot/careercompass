@@ -9,6 +9,16 @@
   "title": "Atlassian JIRA Cloud Documentation",
   "url": "https://support.atlassian.com/jira-software-cloud/"
  },
+ "applied machine learning with scikit learn": {
+  "checked": "2026-11-07",
+  "title": "scikit-learn Documentation",
+  "url": "https://scikit-learn.org/stable/"
+ },
+ "aws cloud deployment and infrastructure as code": {
+  "checked": "2026-11-07",
+  "title": "AWS Cloud Practitioner Essentials",
+  "url": "https://aws.amazon.com/training/digital/aws-cloud-practitioner-essentials/"
+ },
  "aws security services and best practices": {
   "checked": "2026-11-07",
   "title": "AWS Security Documentation",
@@ -19,10 +29,60 @@
   "title": "Azure Security Fundamentals \u2013 Microsoft Learn",
   "url": "https://learn.microsoft.com/en-us/azure/security/fundamentals/"
  },
+ "big data fundamentals with hadoop and spark": {
+  "checked": "2026-11-07",
+  "title": "Apache Spark Documentation",
+  "url": "https://spark.apache.org/docs/latest/"
+ },
  "building accessible react ui components": {
   "checked": "2026-11-07",
   "title": "MDN Web Docs: Accessibility",
   "url": "https://developer.mozilla.org/en-US/docs/Learn/Accessibility"
+ },
+ "c for embedded systems and real time control": {
+  "checked": "2026-11-07",
+  "title": "C++ Core Language",
+  "url": "https://isocpp.org/"
+ },
+ "ci cd pipelines with jenkins": {
+  "checked": "2026-11-07",
+  "title": "Jenkins Documentation",
+  "url": "https://www.jenkins.io/doc/"
+ },
+ "cloud data platforms on aws ec2 s3": {
+  "checked": "2026-11-07",
+  "title": "Amazon EC2 Documentation",
+  "url": "https://docs.aws.amazon.com/ec2/"
+ },
+ "containerization with docker": {
+  "checked": "2026-11-07",
+  "title": "Docker Documentation",
+  "url": "https://docs.docker.com/"
+ },
+ "deep learning with pytorch rnns": {
+  "checked": "2026-11-07",
+  "title": "PyTorch Tutorials",
+  "url": "https://pytorch.org/tutorials/"
+ },
+ "deep learning with tensorflow cnns": {
+  "checked": "2026-11-07",
+  "title": "TensorFlow Tutorials",
+  "url": "https://www.tensorflow.org/tutorials"
+ },
+ "docker containerization for software development": {
+  "checked": "2026-11-07",
+  "title": "Docker Documentation",
+  "url": "https://docs.docker.com/"
+ },
+ "git version control and github collaboration workflows": {
+  "checked": "2026-11-07",
+  "title": "Git Pro Book",
+  "url": "https://git-scm.com/book/en/v2"
+ },
+ "go for high performance backend services": {
+  "checked": "2026-11-07",
+  "title": "Go by Example",
+  "url": "https://gobyexample.com/"
  },
  "incident response process and forensics": {
   "checked": "2026-11-07",
@@ -39,15 +99,60 @@
   "title": "MDN Web Docs: JavaScript",
   "url": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript"
  },
+ "kubernetes for container orchestration": {
+  "checked": "2026-11-07",
+  "title": "Kubernetes Documentation",
+  "url": "https://kubernetes.io/docs/"
+ },
  "linux command line and system administration": {
   "checked": "2026-11-07",
   "title": "The Linux Command Line (TLCL)",
   "url": "https://linuxcommand.org/tlcl.php"
  },
+ "linux command line bash scripting": {
+  "checked": "2026-11-07",
+  "title": "GNU Bash Manual",
+  "url": "https://www.gnu.org/software/bash/manual/"
+ },
+ "linux system administration and bash scripting": {
+  "checked": "2026-11-07",
+  "title": "Linux Documentation",
+  "url": "https://www.kernel.org/doc/html/latest/"
+ },
+ "matlab for control system simulation and signal processing": {
+  "checked": "2026-11-07",
+  "title": "MATLAB Documentation",
+  "url": "https://www.mathworks.com/help/matlab/"
+ },
+ "model monitoring with prometheus grafana": {
+  "checked": "2026-11-07",
+  "title": "Prometheus Documentation",
+  "url": "https://prometheus.io/docs/"
+ },
  "networking basics for security tcp ip bgp firewalls": {
   "checked": "2026-11-07",
   "title": "Khan Academy \u2013 Internet and Networking Basics",
   "url": "https://www.khanacademy.org/computing/computer-science/internet-intro"
+ },
+ "nlp with transformers bert gpt": {
+  "checked": "2026-11-07",
+  "title": "Hugging Face Transformers Documentation",
+  "url": "https://huggingface.co/docs/transformers/"
+ },
+ "orchestration with kubernetes": {
+  "checked": "2026-11-07",
+  "title": "Kubernetes Documentation",
+  "url": "https://kubernetes.io/docs/"
+ },
+ "python for automation and data processing": {
+  "checked": "2026-11-07",
+  "title": "Python Official Tutorial",
+  "url": "https://docs.python.org/3/tutorial/"
+ },
+ "python for data science pandas numpy": {
+  "checked": "2026-11-07",
+  "title": "pandas Documentation",
+  "url": "https://pandas.pydata.org/docs/"
  },
  "python for security automation": {
   "checked": "2026-11-07",
@@ -69,6 +174,11 @@
   "title": "Splunk Documentation \u2013 Getting Started",
   "url": "https://docs.splunk.com/Documentation/Splunk/latest"
  },
+ "sql relational databases postgresql": {
+  "checked": "2026-11-07",
+  "title": "PostgreSQL Documentation",
+  "url": "https://www.postgresql.org/docs/"
+ },
  "threat modeling with mitre att ck framework": {
   "checked": "2026-11-07",
   "title": "MITRE ATT&CK Framework",
@@ -83,6 +193,11 @@
   "checked": "2026-11-07",
   "title": "Web Accessibility Initiative (WAI) - W3C",
   "url": "https://www.w3.org/WAI/"
+ },
+ "version control with git and github": {
+  "checked": "2026-11-07",
+  "title": "Git Documentation",
+  "url": "https://git-scm.com/doc"
  },
  "vulnerability scanning using tenable nessus": {
   "checked": "2026-11-07",

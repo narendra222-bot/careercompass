@@ -311,3 +311,35 @@ def test_rules_remember_an_earlier_free_text_role() -> None:
     ]
     u = agent.understand(msgs, None, pending=["hours_per_week"])
     assert u.profile.target_role == "Ai engineer" and u.profile.hours_per_week == 15
+
+
+def test_role_ideas_follow_the_students_field() -> None:
+    ideas = agent.suggest_roles(agent.Profile(branch="CSE", interest="cyber security"))
+    assert ideas[0] == "Cybersecurity Analyst" and len(ideas) == 4
+    assert "Software Developer" in agent.suggest_roles(agent.Profile(branch="CSE"))
+    # without the LLM only the curated roles can be planned
+    curated = agent.suggest_roles(agent.Profile(branch="CSE", interest="security"), any_role=False)
+    assert set(curated) == {"DevOps Engineer", "Data Analyst", "Machine Learning Engineer"}
+
+
+def test_llm_role_ideas_come_from_the_conversation() -> None:
+    llm = FakeLLM(
+        {
+            "intent": "profile",
+            "branch": "ECE",
+            "year": 2,
+            "interest": "drones",
+            "role_ideas": [
+                "drone systems engineer",
+                "Embedded Engineer",
+                "embedded engineer",
+                "I think you should try robotics",
+                7,
+            ],
+        }
+    )
+    u = agent.understand(convo("2nd year ECE, I love building drones"), llm)
+    assert agent.options_for(u)[:2] == ["Drone Systems Engineer", "Embedded Engineer"]
+    assert len(agent.options_for(u)) == 2  # duplicate, sentence and junk dropped
+    # without ideas from the LLM the field-based list is used
+    assert agent.options_for(agent.understand(convo("2nd year ECE"), None))

@@ -87,6 +87,7 @@ class Understanding:
     custom_role: str | None = None  # any other role, planned from O*NET by the LLM
     missing: list[str] = field(default_factory=list)
     unsupported_role: str | None = None
+    role_ideas: list[str] = field(default_factory=list)  # roles the LLM thinks fit this student
 
 
 # ---------------- understanding ----------------
@@ -104,11 +105,19 @@ Return ONLY a JSON object with these keys:
   year: year of study 1-6 (final year = 4, graduated = 5), else null
   hours_per_week: weekly study hours (per day x7, weekdays only x5, weekends only x2), else null
   target_role: the job role they want as a short role name, e.g. "machine learning engineer",
-    or null if they did not name one. Never put their branch, a skill or a sentence here.
+    "cybersecurity analyst", "full stack developer", or null if they did not name one. If they
+    answer the Assistant's role question with a field instead of a title (e.g. "AI & ML", "cloud",
+    "web development", "security"), use the usual job title for that field ("ai/ml engineer",
+    "cloud engineer", "web developer", "cybersecurity analyst"). Keep the role they typed; never
+    swap it for a different one. Never put their branch, a skill or a sentence here.
   interest: an area they like when no clear role is given, e.g. "AI", "cloud", else null
   tech_mastery: object mapping tools/technologies they say they know to 0.3 (beginner),
     0.5 (comfortable) or 0.8 (strong)
   max_weeks: deadline in weeks if they gave one (months x4), else null
+  role_ideas: if target_role is null, 4 specific job titles that best fit EVERYTHING the student
+    said (branch, year, interests, skills they know, what they enjoy or dislike, goals like
+    higher studies, govt jobs, startups or a specific company). Best fit first, real titles
+    a fresher can get hired as, 1-4 words each. If target_role is set, []
 Only the Student's own words count; ignore tools the Assistant mentioned. Never guess values \
 that were not said. Use null for unknown."""
 
@@ -122,12 +131,27 @@ def transcript(messages: list[dict[str, str]], limit: int = 14) -> str:
     return "\n".join(lines)
 
 
-def _llm_profile(messages: list[dict[str, str]], llm: LLM) -> tuple[Profile, Intent] | None:
+def _role_ideas(raw: Any) -> list[str]:
+    if not isinstance(raw, list):
+        return []
+    out: list[str] = []
+    for r in raw:
+        if isinstance(r, str) and plausible_role(r.strip()) and len(r.split()) <= 5:
+            name = display_role(r.strip())
+            if name.lower() not in (o.lower() for o in out):
+                out.append(name)
+    return out[:4]
+
+
+def _llm_profile(
+    messages: list[dict[str, str]], llm: LLM
+) -> tuple[Profile, Intent, list[str]] | None:
     try:
         raw = parse_json(llm.chat(EXTRACT_SYSTEM, transcript(messages), json_mode=True))
     except (LLMError, ValueError):
         return None
     intent = raw.pop("intent", "other")
+    ideas = _role_ideas(raw.pop("role_ideas", None))
     if intent not in ("greeting", "profile", "change", "question", "other"):
         intent = "other"
     tm = raw.get("tech_mastery")
@@ -151,7 +175,7 @@ def _llm_profile(messages: list[dict[str, str]], llm: LLM) -> tuple[Profile, Int
     data["tech_mastery"] = {
         k: v for k, v in data.get("tech_mastery", {}).items() if _mentioned(k, said)
     }
-    return Profile.model_validate(data), intent  # type: ignore[return-value]
+    return Profile.model_validate(data), intent, ideas  # type: ignore[return-value]
 
 
 def _mentioned(tool: str, text: str) -> bool:
@@ -250,7 +274,7 @@ def understand(
 ) -> Understanding:
     got = _llm_profile(messages, llm) if llm is not None else None
     if got is not None:
-        profile, intent = got
+        profile, intent, ideas = got
         source = llm.provider if llm is not None else "rules"
         # rules still catch what a terse LLM answer may miss (e.g. a bare "10")
         rp, _ = _rules_profile(messages, pending or [])
@@ -260,12 +284,13 @@ def understand(
     else:
         profile, intent = _rules_profile(messages, pending or [])
         source = "rules"
+        ideas = []
     if profile.branch:
         profile = profile.model_copy(update={"branch": intake.normalize_branch(profile.branch)})
     if profile.name:
         profile = profile.model_copy(update={"name": profile.name.strip().title()})
 
-    u = Understanding(profile=profile, intent=intent, source=source)
+    u = Understanding(profile=profile, intent=intent, source=source, role_ideas=ideas)
     if profile.target_role:
         u.role_key = intake.normalize_role(profile.target_role)
         if u.role_key is None:
@@ -333,16 +358,67 @@ OPTIONS = {
 }
 
 
-def suggest_roles(p: Profile) -> list[str]:
-    hint = f"{p.branch or ''} {p.interest or ''} {p.target_role or ''}".lower()
-    order = ["devops engineer", "data analyst", "machine learning engineer"]
-    if re.search(r"\b(ai|ml|machine|data science|ds|intelligen)", hint):
-        order = ["machine learning engineer", "data analyst", "devops engineer"]
-    elif re.search(r"com|bba|business|finance|account|econ|stat|math", hint):
-        order = ["data analyst", "machine learning engineer", "devops engineer"]
-    elif re.search(r"cloud|devops|linux|network|infra|server", hint):
-        order = ["devops engineer", "machine learning engineer", "data analyst"]
-    return [role_name(r) for r in order]
+# Role ideas by field. The LLM planner can plan any of them from O*NET; without the LLM only
+# the curated three can be planned, so rules mode falls back to those.
+ROLE_IDEAS: list[tuple[str, list[str]]] = [
+    (
+        r"\b(ai|ml|machine|data science|ds|intelligen|deep learning|nlp|vision)",
+        ["machine learning engineer", "ai engineer", "data scientist", "data analyst"],
+    ),
+    (
+        r"\b(cyber|security|hack|ethical)",
+        ["cybersecurity analyst", "penetration tester", "SOC Analyst", "network engineer"],
+    ),
+    (
+        r"\b(cloud|devops|linux|network|infra|server)",
+        ["devops engineer", "cloud engineer", "site reliability engineer", "network engineer"],
+    ),
+    (
+        r"\b(web|front ?end|back ?end|full ?stack|apps?|android|mobile)\b",
+        ["full stack developer", "frontend developer", "backend developer", "mobile app developer"],
+    ),
+    (
+        r"\b(design|ui|ux|figma)",
+        ["UI/UX Designer", "product designer", "frontend developer", "graphic designer"],
+    ),
+    (
+        r"\b(b\.? ?com|bba|mba|business|financ|account|econ|stat|math|commerce)",
+        ["data analyst", "business analyst", "financial analyst", "product manager"],
+    ),
+    (
+        r"\b(ece|eee|electr|embedded|vlsi|iot|drone)",
+        ["embedded systems engineer", "IoT Engineer", "VLSI Design Engineer", "software developer"],
+    ),
+    (
+        r"\b(mech|civil|automobile|aero)",
+        ["CAD Design Engineer", "data analyst", "robotics engineer", "software developer"],
+    ),
+]
+GENERAL_ROLES = ["software developer", "data analyst", "devops engineer", "cybersecurity analyst"]
+
+
+def suggest_roles(p: Profile, any_role: bool = True) -> list[str]:
+    hint = f"{p.interest or ''} {p.target_role or ''} {p.branch or ''}".lower()
+    if not any_role:
+        order = ["devops engineer", "data analyst", "machine learning engineer"]
+        if re.search(ROLE_IDEAS[0][0], hint):
+            order = ["machine learning engineer", "data analyst", "devops engineer"]
+        elif re.search(ROLE_IDEAS[5][0], hint):
+            order = ["data analyst", "machine learning engineer", "devops engineer"]
+        return [role_name(r) for r in order]
+    # interest first, then branch: an AI&ML student who likes security gets security roles
+    for text in (f"{p.interest or ''} {p.target_role or ''}".lower(), hint):
+        for pattern, roles in ROLE_IDEAS:
+            if text.strip() and re.search(pattern, text):
+                return [role_name(r) for r in roles]
+    return [role_name(r) for r in GENERAL_ROLES]
+
+
+def role_options(u: Understanding) -> list[str]:
+    """Roles to offer: the LLM's reading of this student, else the field-based list."""
+    if u.source != "rules" and u.role_ideas:
+        return u.role_ideas
+    return suggest_roles(u.profile, any_role=u.source != "rules")
 
 
 def ask_for(u: Understanding) -> list[str]:
@@ -355,7 +431,7 @@ def options_for(u: Understanding) -> list[str]:
     if not nxt:
         return []
     if nxt[0] == "target_role":
-        return suggest_roles(u.profile)
+        return role_options(u)
     return OPTIONS.get(nxt[0], [])
 
 
@@ -367,8 +443,7 @@ grounded in O*NET job data.
 Rules:
 - Reply in 1 to 5 short sentences, like a friendly senior. Markdown **bold** is fine. Use a short \
 list only when answering a question that needs one.
-- Match the student's language. If they write Telugu or Hindi in English letters, reply the same \
-way; otherwise reply in English.
+- Always reply in simple, clear English, even if the student mixes in other languages.
 - Greet only in your first reply of the conversation; after that, get straight to the point.
 - If the student only said hello and nothing is known yet, introduce yourself in one sentence \
 (you plan week-by-week career roadmaps) before asking.
@@ -376,8 +451,9 @@ way; otherwise reply in English.
 - Use only facts from CONTEXT about them and their plan. Never invent courses, links, salaries, \
 numbers or timelines.
 - If CONTEXT.ask_for is not empty, end with ONE natural question asking for exactly those things.
-- If the role is still unknown and CONTEXT.suggest_roles is given, suggest those roles briefly, \
-leading with the first one and saying why it fits them.
+- If the role is still unknown and CONTEXT.suggest_roles is given, name the first two or three \
+in **bold**, each with a few words on why it fits, tied to something the student actually said \
+(their branch, interest or skills). Then ask which one they like, or any other role.
 - If CONTEXT.unsupported_role is set, say kindly that a detailed roadmap for it is not available \
 yet, and offer CONTEXT.suggest_roles instead.
 - If the student asks a question, answer it briefly and correctly. General career knowledge is \
@@ -406,10 +482,9 @@ def reply_context(
         "first_reply": first_reply,
         "student": {k: v for k, v in known.items() if v not in (None, "", [])},
         "ask_for": [ASK_PHRASES[f] for f in ask_for(u)],
-        "suggest_roles": suggest_roles(p) if "target_role" in u.missing else [],
+        "suggest_roles": role_options(u) if "target_role" in u.missing else [],
         "unsupported_role": u.unsupported_role,
-        "roles_with_hand_checked_catalogs": [role_name(r) for r in ROLE_NAMES],
-        "note": "Any other job role can also be planned from O*NET job data.",
+        "note": "Any job role the student names can be planned from O*NET job data.",
         "roadmap": roadmap_facts,
     }
 
@@ -445,7 +520,7 @@ def template_reply(u: Understanding, has_roadmap: bool, last: str = "") -> str:
     hi = f"Hi {p.name}! " if p.name else "Hi! "
     nxt = ask_for(u)
     if u.unsupported_role:
-        roles = suggest_roles(p)
+        roles = role_options(u)
         choices = f"{', '.join(roles[:-1])} or {roles[-1]}"
         if u.source == "rules":
             return (
@@ -474,7 +549,7 @@ def template_reply(u: Understanding, has_roadmap: bool, last: str = "") -> str:
     lead = _ack(last) if p.name is None else f"Thanks, {p.name}. "
     extra = ""
     if "target_role" in nxt:
-        roles = suggest_roles(p)
+        roles = role_options(u)
         extra = f" Based on what you study, **{roles[0]}** could be a good fit."
     return f"{lead}{q[0].upper()}{q[1:]}?{extra}"
 
