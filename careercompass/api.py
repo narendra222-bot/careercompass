@@ -7,19 +7,22 @@ Endpoints
   GET  /api/health    database, catalog and LLM status
   GET  /api/roles     roles the planner supports (for a dropdown)
   POST /api/roadmap   free text (+ answers to earlier questions) -> roadmap or questions
+  POST /api/chat      a conversation -> streamed thinking steps, reply text and roadmap (SSE)
 """
 
 from __future__ import annotations
 
 import os
 import threading
+from collections.abc import Iterator
 from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from careercompass import catalog, intake
+from careercompass import catalog, chat, intake
 from careercompass.graph import build_graph
 from careercompass.llm import get_llm
 from careercompass.planner import load_role_profile
@@ -47,7 +50,18 @@ def _runtime() -> dict[str, Any]:
         _state["con"] = db.connect()
         _state["llm"] = get_llm()
         _state["graph"] = build_graph(_state["llm"], _state["con"])
+        threading.Thread(target=_warm_search, daemon=True).start()
     return _state
+
+
+def _warm_search() -> None:
+    """Load the O*NET search index in the background (first load takes a few seconds)."""
+    try:
+        from careercompass import retrieval
+
+        retrieval.search("software developer", k=1)
+    except Exception:  # search is only needed for non-curated roles
+        pass
 
 
 class RoadmapRequest(BaseModel):
@@ -104,6 +118,22 @@ def roles() -> list[dict[str, Any]]:
             }
         )
     return out
+
+
+@app.post("/api/chat")
+def chat_stream(req: chat.ChatRequest) -> StreamingResponse:
+    """One chat turn as Server-Sent Events: step*, text*, roadmap?, text*, done | error."""
+    rt = _runtime()
+
+    def gen() -> Iterator[str]:
+        with _lock:  # graph + DuckDB connection are shared
+            yield from chat.run_events(rt["graph"], req, rt["llm"], con=rt["con"])
+
+    return StreamingResponse(
+        gen(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.post("/api/roadmap", response_model=RoadmapResponse)

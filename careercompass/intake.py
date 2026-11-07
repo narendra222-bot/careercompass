@@ -34,6 +34,8 @@ QUESTIONS = {
 }
 
 BRANCHES: list[tuple[str, str]] = [
+    (r"\bai\s*(&|and|/)?\s*ml\b|\bartificial intelligence\b", "AI&ML"),
+    (r"\bai\s*(&|and|/)\s*ds\b|\baids\b|\bdata science\b", "AI&DS"),
     (r"\bb\.?\s?com\b|\bcommerce\b", "B.Com"),
     (r"\bcse\b|\bcomputer science\b|\bcomputer engineering\b", "CSE"),
     (r"\bece\b|\belectronics\b", "ECE"),

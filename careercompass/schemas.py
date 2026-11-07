@@ -108,7 +108,8 @@ class TechGap(_Strict):
 
 
 class Provenance(_Strict):
-    generator: Literal["deterministic-planner"] = "deterministic-planner"
+    # deterministic-planner: curated catalog; llm-onet-planner: LLM draft from O*NET requirements
+    generator: Literal["deterministic-planner", "llm-onet-planner"] = "deterministic-planner"
     data: str = "O*NET 31.0 Database (onetcenter.org), CC BY 4.0"
     editorial_constants_human_reviewed: bool = False
 

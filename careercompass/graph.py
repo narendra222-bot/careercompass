@@ -33,6 +33,7 @@ MAX_REPLANS = 2
 
 class State(TypedDict, total=False):
     text: str
+    profile: dict[str, Any]
     answers: dict[str, Any]
     draft: dict[str, Any]
     intake_source: str
@@ -59,7 +60,14 @@ def build_graph(llm: LLM | None, con: Any = None) -> Any:
     con = con or db.connect()
 
     def node_intake(state: State) -> State:
-        parsed = intake.parse_intake(state.get("text", ""), llm)
+        if (given := state.get("profile")) is not None:
+            # the chat agent already read the conversation; trust its validated profile
+            parsed = {
+                "draft": intake.IntakeDraft.model_validate(given),
+                "source": state.get("intake_source") or "agent",
+            }
+        else:
+            parsed = intake.parse_intake(state.get("text", ""), llm)
         data = parsed["draft"].model_dump()
         answers = {k: v for k, v in (state.get("answers") or {}).items() if v not in (None, "")}
         if "tech_mastery" in answers:

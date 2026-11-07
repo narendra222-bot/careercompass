@@ -1,0 +1,92 @@
+{
+ "advanced figma workflows components auto layout variables": {
+  "checked": "2026-11-07",
+  "title": "Figma Help Center: Components and Auto Layout",
+  "url": "https://help.figma.com/hc/en-us"
+ },
+ "agile workflows and jira for design handoff": {
+  "checked": "2026-11-07",
+  "title": "Atlassian JIRA Cloud Documentation",
+  "url": "https://support.atlassian.com/jira-software-cloud/"
+ },
+ "aws security services and best practices": {
+  "checked": "2026-11-07",
+  "title": "AWS Security Documentation",
+  "url": "https://docs.aws.amazon.com/security/"
+ },
+ "azure security fundamentals": {
+  "checked": "2026-11-07",
+  "title": "Azure Security Fundamentals \u2013 Microsoft Learn",
+  "url": "https://learn.microsoft.com/en-us/azure/security/fundamentals/"
+ },
+ "building accessible react ui components": {
+  "checked": "2026-11-07",
+  "title": "MDN Web Docs: Accessibility",
+  "url": "https://developer.mozilla.org/en-US/docs/Learn/Accessibility"
+ },
+ "incident response process and forensics": {
+  "checked": "2026-11-07",
+  "title": "NIST SP 800-61 Rev. 2 \u2013 Computer Security Incident Handling Guide",
+  "url": "https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final"
+ },
+ "infrastructure as code with ansible and docker": {
+  "checked": "2026-11-07",
+  "title": "Ansible Documentation",
+  "url": "https://docs.ansible.com/"
+ },
+ "javascript for ui interactions dom events es6": {
+  "checked": "2026-11-07",
+  "title": "MDN Web Docs: JavaScript",
+  "url": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript"
+ },
+ "linux command line and system administration": {
+  "checked": "2026-11-07",
+  "title": "The Linux Command Line (TLCL)",
+  "url": "https://linuxcommand.org/tlcl.php"
+ },
+ "networking basics for security tcp ip bgp firewalls": {
+  "checked": "2026-11-07",
+  "title": "Khan Academy \u2013 Internet and Networking Basics",
+  "url": "https://www.khanacademy.org/computing/computer-science/internet-intro"
+ },
+ "python for security automation": {
+  "checked": "2026-11-07",
+  "title": "Python Security Automation Full Course (4+ HOURS)",
+  "url": "https://www.youtube.com/watch?v=1NeJvF_DTTI"
+ },
+ "react fundamentals components hooks state management": {
+  "checked": "2026-11-07",
+  "title": "React Official Documentation",
+  "url": "https://react.dev/learn"
+ },
+ "semantic html and responsive css flexbox grid": {
+  "checked": "2026-11-07",
+  "title": "MDN Web Docs: CSS Layout",
+  "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS"
+ },
+ "siem fundamentals with splunk": {
+  "checked": "2026-11-07",
+  "title": "Splunk Documentation \u2013 Getting Started",
+  "url": "https://docs.splunk.com/Documentation/Splunk/latest"
+ },
+ "threat modeling with mitre att ck framework": {
+  "checked": "2026-11-07",
+  "title": "MITRE ATT&CK Framework",
+  "url": "https://attack.mitre.org/"
+ },
+ "typescript for scalable frontend development": {
+  "checked": "2026-11-07",
+  "title": "TypeScript Handbook",
+  "url": "https://www.typescriptlang.org/docs/handbook/intro.html"
+ },
+ "ux principles accessibility standards and usability testing": {
+  "checked": "2026-11-07",
+  "title": "Web Accessibility Initiative (WAI) - W3C",
+  "url": "https://www.w3.org/WAI/"
+ },
+ "vulnerability scanning using tenable nessus": {
+  "checked": "2026-11-07",
+  "title": "Tenable Nessus Documentation",
+  "url": "https://docs.tenable.com/nessus/"
+ }
+}

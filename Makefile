@@ -1,4 +1,4 @@
-.PHONY: setup build-data test lint catalog-check demo api help
+.PHONY: setup build-data test lint catalog-check demo api web web-setup help
 
 VENV ?= .venv
 PYTHON ?= $(VENV)/bin/python
@@ -16,6 +16,8 @@ help:
 	@echo "  catalog-check - Validate learning catalog (DAG, links, names) and dump target elements"
 	@echo "  demo          - Regenerate the 3 sample roadmaps + JSON Schema in docs/"
 	@echo "  api           - Run the HTTP API on http://localhost:8000 (docs at /docs)"
+	@echo "  web-setup     - Install the web app dependencies (needs Node.js + pnpm)"
+	@echo "  web           - Run the web app on http://localhost:3000 (start 'make api' first)"
 
 setup:
 	@test -d $(VENV) || python3 -m venv $(VENV)
@@ -41,3 +43,9 @@ demo:
 
 api:
 	$(VENV)/bin/uvicorn careercompass.api:app --reload --port 8000
+
+web-setup:
+	cd web && pnpm install
+
+web:
+	cd web && pnpm dev

@@ -6,6 +6,7 @@ Expresses baseline proficiency as a fraction of an O*NET element's required leve
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -110,6 +111,10 @@ def _normalize_branch_key(profile_branch: tuple[str, str] | str) -> tuple[str, s
 
     branch_str = str(profile_branch).strip().lower()
     if any(term in branch_str for term in ["cse", "computer science", "cs", "computer engineering"]):
+        return ("Engineering", "Computer Science and Engineering")
+    # CS-family branches share most of the CSE first-years curriculum
+    cs_family = r"\bai\s*&?\s*(ml|ds)\b|\bdata science\b|\bit\b|information technology"
+    if re.search(cs_family, branch_str):
         return ("Engineering", "Computer Science and Engineering")
     if any(term in branch_str for term in ["b.com", "bcom", "commerce", "business", "accounting"]):
         return ("Commerce", "General Commerce")
