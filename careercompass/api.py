@@ -45,14 +45,20 @@ _lock = threading.Lock()  # DuckDB connection + compiled graph are shared
 _state: dict[str, Any] = {}
 
 
-def _runtime() -> dict[str, Any]:
-    if not _state:
-        from careercompass import db
+_init_lock = threading.Lock()
 
-        _state["con"] = db.connect()
-        _state["llm"] = get_llm()
-        _state["graph"] = build_graph(_state["llm"], _state["con"])
-        threading.Thread(target=_warm_search, daemon=True).start()
+
+def _runtime() -> dict[str, Any]:
+    # check "graph", not an empty dict: signing in first puts "accounts" in _state
+    if "graph" not in _state:
+        with _init_lock:
+            if "graph" not in _state:
+                from careercompass import db
+
+                _state["con"] = db.connect()
+                _state["llm"] = get_llm()
+                _state["graph"] = build_graph(_state["llm"], _state["con"])
+                threading.Thread(target=_warm_search, daemon=True).start()
     return _state
 
 

@@ -107,3 +107,20 @@ def test_conversation_validation(client: TestClient) -> None:
     huge = {**CONV, "blob": "x" * (accounts.MAX_CONVERSATION_BYTES + 1)}
     assert client.put("/api/conversations/c1", json=huge, headers=h).status_code == 422
     assert client.put("/api/conversations/c1", json=CONV).status_code == 401
+
+
+def test_signing_in_first_does_not_skip_runtime_setup(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # _state already holds "accounts" after a sign-in; chat must still build the graph
+    from careercompass import db
+
+    login(client)
+    monkeypatch.setattr(db, "connect", lambda: "con")
+    monkeypatch.setattr(api, "get_llm", lambda: None)
+    monkeypatch.setattr(api, "build_graph", lambda llm, con: "graph")
+    monkeypatch.setattr(api, "_warm_search", lambda: None)
+    rt = api._runtime()
+    assert (rt["graph"], rt["con"]) == ("graph", "con")
+    for k in ("graph", "con", "llm"):
+        api._state.pop(k)
