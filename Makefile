@@ -10,7 +10,7 @@ MYPY ?= $(VENV)/bin/mypy
 help:
 	@echo "Available targets:"
 	@echo "  setup         - Initialize virtual environment and install dependencies"
-	@echo "  build-data    - Build O*NET database and search indexes (not implemented yet)"
+	@echo "  build-data    - Download O*NET 31.0 and build the database and search index"
 	@echo "  test          - Run test suite"
 	@echo "  lint          - Run ruff linter/formatter check and mypy type checking"
 	@echo "  catalog-check - Validate learning catalog (DAG, links, names) and dump target elements"
@@ -25,7 +25,7 @@ setup:
 	$(PIP) install -r requirements.txt -r requirements-dev.txt
 
 build-data:
-	@echo "build-data: not implemented yet"
+	$(PYTHON) scripts/build_data.py
 
 test:
 	$(PYTEST) tests/unit
