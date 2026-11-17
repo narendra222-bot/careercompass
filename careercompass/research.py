@@ -65,8 +65,11 @@ def _save(key: str, value: dict[str, Any]) -> None:
     with _lock:
         cache = _load_cache()
         cache[key] = value
-        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        CACHE_PATH.write_text(json.dumps(cache, indent=1, sort_keys=True))
+        try:
+            CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+            CACHE_PATH.write_text(json.dumps(cache, indent=1, sort_keys=True))
+        except OSError:  # read-only host: keep working without saving the cache
+            pass
 
 
 def cached(topic: str) -> dict[str, str] | None:

@@ -13,6 +13,8 @@ readiness score. Every course link is checked before it is shown.
 
 Team: Guvvala Venkata Narendra, Priyanshu Singh, Jasleen Kaur (LPU, CSE473).
 
+**Live demo:** https://careercompass-five-omega.vercel.app · API: https://careercompass-api-zeta.vercel.app/api/health
+
 ---
 
 ## 1. What you need
@@ -116,6 +118,32 @@ For a production build use `pnpm build` and then `pnpm start`.
 python -m pytest -q tests        # about 4 minutes, all tests should pass
 ruff check careercompass
 ```
+
+## Deploying to Vercel
+
+Both parts run on Vercel as two projects.
+
+**Backend** (`careercompass-api`): a Python function built from a staged folder that holds the
+code, the prebuilt O*NET database and search index, and the embedding model. It uses
+`fastembed` (ONNX) instead of PyTorch, which gives the same vectors in a much smaller bundle.
+
+```bash
+make build-data                                # once, so data/onet.duckdb and data/chroma exist
+deploy/vercel-api/stage.sh /tmp/cc-api         # stage the function
+cd /tmp/cc-api && vercel link --project careercompass-api && vercel deploy --prod
+```
+
+Environment variables on the backend project:
+
+| Variable | Value |
+|---|---|
+| `GROQ_API_KEY`, `APP_SECRET` | as in `.env` (mark them sensitive) |
+| `CORS_ORIGINS` | the frontend URL |
+| `DATABASE_URL` | Postgres for accounts and chats (Neon from the Vercel Marketplace). Without it accounts live in `/tmp` and reset when the function restarts |
+| `VERCEL_SUPPORT_LARGE_FUNCTIONS` | `1` (the bundle is a little over 500 MB) |
+
+**Frontend** (`careercompass`): deploy the `web/` folder with
+`NEXT_PUBLIC_API_URL` set to the backend URL.
 
 ## Make shortcuts (Linux / macOS)
 

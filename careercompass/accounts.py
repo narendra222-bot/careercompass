@@ -1,6 +1,7 @@
 """Accounts and saved chats.
 
-Storage is one SQLite file (data/app.db, not in git): users and their conversations.
+Storage: users and their conversations, in one SQLite file (data/app.db, not in git), or in
+Postgres when DATABASE_URL is set (hosted deploys, where the filesystem is not kept).
 A conversation is stored as the JSON the web app already uses, so the server does not
 need to understand its shape; it only checks ownership and size.
 
@@ -22,6 +23,7 @@ import os
 import re
 import secrets
 import sqlite3
+import tempfile
 import threading
 import time
 from pathlib import Path
@@ -44,36 +46,116 @@ class AuthError(Exception):
 # ---------------- storage ----------------
 
 
-def connect(path: Path | str | None = None) -> sqlite3.Connection:
+class _Row(dict[str, Any]):
+    """A result row readable by column name or position, like sqlite3.Row."""
+
+    def __getitem__(self, key: Any) -> Any:
+        if isinstance(key, int):
+            return list(self.values())[key]
+        return super().__getitem__(key)
+
+
+class _PgCursor:
+    def __init__(self, cur: Any) -> None:
+        self.rowcount = cur.rowcount
+        cols = [d.name for d in cur.description] if cur.description else []
+        self._rows = [_Row(zip(cols, r, strict=True)) for r in cur.fetchall()] if cols else []
+
+    def fetchone(self) -> _Row | None:
+        return self._rows[0] if self._rows else None
+
+    def fetchall(self) -> list[_Row]:
+        return self._rows
+
+
+class PgConnection:
+    """The small part of the sqlite3 connection API this module uses, on Postgres.
+
+    Uses autocommit, so commit() is a no-op. Reconnects once if the server closed an idle
+    connection (hosted Postgres does this).
+    """
+
+    def __init__(self, url: str) -> None:
+        self.url = url
+        self._lock = threading.Lock()
+        self._con: Any = None
+
+    def _connect(self) -> Any:
+        import psycopg
+
+        return psycopg.connect(self.url, autocommit=True)
+
+    def execute(self, sql: str, params: tuple[Any, ...] = ()) -> _PgCursor:
+        import psycopg
+
+        sql = sql.replace("?", "%s")
+        with self._lock:
+            for attempt in (1, 2):
+                try:
+                    if self._con is None or self._con.closed:
+                        self._con = self._connect()
+                    with self._con.cursor() as cur:
+                        cur.execute(sql, params)
+                        return _PgCursor(cur)
+                except psycopg.OperationalError:
+                    self._con = None
+                    if attempt == 2:
+                        raise
+        raise AssertionError("unreachable")
+
+    def commit(self) -> None:
+        pass
+
+    def close(self) -> None:
+        if self._con is not None:
+            self._con.close()
+
+
+SCHEMA = (
+    """CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        picture TEXT,
+        provider TEXT NOT NULL,
+        created_at DOUBLE PRECISION NOT NULL
+    )""",
+    """CREATE TABLE IF NOT EXISTS conversations (
+        id TEXT NOT NULL,
+        user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        title TEXT NOT NULL,
+        data TEXT NOT NULL,
+        updated_at DOUBLE PRECISION NOT NULL,
+        PRIMARY KEY (user_id, id)
+    )""",
+    "CREATE INDEX IF NOT EXISTS conv_user ON conversations(user_id, updated_at)",
+)
+
+
+def connect(path: Path | str | None = None) -> Any:
+    """Open the accounts store: Postgres if DATABASE_URL is set (and no path given), else SQLite."""
+    url = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL")
+    if path is None and url:
+        pg = PgConnection(url)
+        for stmt in SCHEMA:
+            pg.execute(stmt)
+        return pg
     p = Path(path or DB_PATH)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(p, check_same_thread=False)
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        con = sqlite3.connect(p, check_same_thread=False)
+        con.executescript(";\n".join(SCHEMA) + ";")
+    except (OSError, sqlite3.OperationalError):
+        if path is not None:
+            raise
+        # read-only host without DATABASE_URL: keep accounts in a temporary file instead
+        con = sqlite3.connect(Path(tempfile.gettempdir()) / "app.db", check_same_thread=False)
+        con.executescript(";\n".join(SCHEMA) + ";")
     con.row_factory = sqlite3.Row
-    con.executescript(
-        """
-        CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            email TEXT UNIQUE NOT NULL,
-            name TEXT NOT NULL,
-            picture TEXT,
-            provider TEXT NOT NULL,
-            created_at REAL NOT NULL
-        );
-        CREATE TABLE IF NOT EXISTS conversations (
-            id TEXT NOT NULL,
-            user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-            title TEXT NOT NULL,
-            data TEXT NOT NULL,
-            updated_at REAL NOT NULL,
-            PRIMARY KEY (user_id, id)
-        );
-        CREATE INDEX IF NOT EXISTS conv_user ON conversations(user_id, updated_at);
-        """
-    )
     return con
 
 
-def _user_dict(row: sqlite3.Row) -> dict[str, Any]:
+def _user_dict(row: Any) -> dict[str, Any]:
     return {
         "id": row["id"],
         "email": row["email"],
@@ -84,7 +166,7 @@ def _user_dict(row: sqlite3.Row) -> dict[str, Any]:
 
 
 def upsert_user(
-    con: sqlite3.Connection, email: str, name: str, provider: str, picture: str | None = None
+    con: Any, email: str, name: str, provider: str, picture: str | None = None
 ) -> dict[str, Any]:
     email = email.strip().lower()
     name = name.strip()[:60] or email.split("@")[0]
@@ -109,19 +191,19 @@ def upsert_user(
         return _user_dict(con.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone())
 
 
-def get_user(con: sqlite3.Connection, uid: str) -> dict[str, Any] | None:
+def get_user(con: Any, uid: str) -> dict[str, Any] | None:
     row = con.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone()
     return _user_dict(row) if row else None
 
 
-def list_conversations(con: sqlite3.Connection, uid: str) -> list[dict[str, Any]]:
+def list_conversations(con: Any, uid: str) -> list[dict[str, Any]]:
     rows = con.execute(
         "SELECT data FROM conversations WHERE user_id = ? ORDER BY updated_at DESC", (uid,)
     ).fetchall()
     return [json.loads(r["data"]) for r in rows]
 
 
-def save_conversation(con: sqlite3.Connection, uid: str, conv: dict[str, Any]) -> None:
+def save_conversation(con: Any, uid: str, conv: dict[str, Any]) -> None:
     cid = str(conv.get("id") or "")
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", cid):
         raise ValueError("bad conversation id")
@@ -144,7 +226,7 @@ def save_conversation(con: sqlite3.Connection, uid: str, conv: dict[str, Any]) -
         con.commit()
 
 
-def delete_conversation(con: sqlite3.Connection, uid: str, cid: str) -> bool:
+def delete_conversation(con: Any, uid: str, cid: str) -> bool:
     with _lock:
         cur = con.execute("DELETE FROM conversations WHERE user_id = ? AND id = ?", (uid, cid))
         con.commit()

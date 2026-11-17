@@ -22,14 +22,13 @@ import duckdb
 import numpy as np
 import yaml
 from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer
 
 from careercompass import config
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_EMBED_MODEL = "BAAI/bge-small-en-v1.5"
-CHROMA_PATH = Path("data/chroma")
+CHROMA_PATH = Path(os.getenv("CHROMA_PATH", "data/chroma"))
 ALIASES_PATH = Path("data/aliases.yaml")
 ROLE_PROFILES_PATH = Path("data/role_profiles.yaml")
 COLLECTION_NAME = "occupations"
@@ -41,7 +40,7 @@ _TOKEN_PATTERN = re.compile(r"\w+")
 _BM25_INDEX: BM25Okapi | None = None
 _DOC_METADATAS: list[dict[str, Any]] | None = None
 _SOC_TO_INDEX: dict[str, int] | None = None
-_EMBED_MODEL_INSTANCE: SentenceTransformer | None = None
+_EMBED_MODEL_INSTANCE: Any = None
 _ALIASES_MAP: dict[str, str] | None = None
 _ROLE_PROFILES_MAP: dict[str, Any] | None = None
 
@@ -51,13 +50,45 @@ def _tokenize(text: str) -> list[str]:
     return _TOKEN_PATTERN.findall(text.lower())
 
 
-def get_embed_model() -> SentenceTransformer:
-    """Retrieve or initialize the SentenceTransformer model singleton."""
+class _FastEmbedModel:
+    """The same BGE model run with ONNX (fastembed), for hosts too small for PyTorch.
+
+    Offers the subset of SentenceTransformer.encode() this module uses.
+    """
+
+    def __init__(self, model_name: str) -> None:
+        from fastembed import TextEmbedding
+
+        self._model = TextEmbedding(model_name)
+
+    def encode(self, texts: str | list[str], normalize_embeddings: bool = True, **_: Any) -> Any:
+        single = isinstance(texts, str)
+        vecs = np.array(list(self._model.embed([texts] if single else texts)), dtype=np.float32)
+        if normalize_embeddings:
+            vecs /= np.linalg.norm(vecs, axis=1, keepdims=True)
+        return vecs[0] if single else vecs
+
+
+def get_embed_model() -> Any:
+    """Retrieve or initialize the embedding model singleton.
+
+    Uses sentence-transformers when installed, otherwise fastembed (EMBED_BACKEND forces one).
+    """
     global _EMBED_MODEL_INSTANCE
     if _EMBED_MODEL_INSTANCE is None:
         model_name = os.getenv("EMBED_MODEL", DEFAULT_EMBED_MODEL)
+        backend = os.getenv("EMBED_BACKEND", "")
         logger.info("Loading embedding model: %s", model_name)
-        _EMBED_MODEL_INSTANCE = SentenceTransformer(model_name)
+        if backend != "fastembed":
+            try:
+                from sentence_transformers import SentenceTransformer
+
+                _EMBED_MODEL_INSTANCE = SentenceTransformer(model_name)
+                return _EMBED_MODEL_INSTANCE
+            except ImportError:
+                if backend == "sentence-transformers":
+                    raise
+        _EMBED_MODEL_INSTANCE = _FastEmbedModel(model_name)
     return _EMBED_MODEL_INSTANCE
 
 

@@ -128,8 +128,11 @@ class OpenAICompatLLM:
 
     def _cache_put(self, path: Path, model: str, content: str) -> None:
         if self.use_cache and content:
-            CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps({"model": model, "content": content}))
+            try:
+                CACHE_DIR.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps({"model": model, "content": content}))
+            except OSError:  # read-only host (e.g. a serverless function): skip caching
+                pass
 
     def _check(self, resp: httpx.Response, model: str) -> None:
         if resp.status_code == 429:
